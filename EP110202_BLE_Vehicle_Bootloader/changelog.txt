@@ -1,0 +1,21 @@
+V010100  2023/02/27
+
+1:  Vehicle的 APP和BOOTLOADER整合后的软体。
+
+V020100  2023/03/06
+
+1:  Vehicle的 APP和BOOTLOADER整合后的软体。
+2. 将默认诊断ID由601改成631,609改成639
+
+V030100  2023/07/21
+
+1：Bootloader版本，不带App，需要单独升级App
+2：修复升级过程中会出现异常的为题
+
+
+V040100 2023/07/27
+1. 修正bootloader fota失败的问题；
+
+V050100 2023/09/21
+1.  修正FOTA失败时，BLE boot损坏，需要重新JLink下载boot的问题；
+
