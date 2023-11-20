@@ -1,0 +1,17 @@
+
+
+
+EP110202_BLE_Vehicle_V04:
+	1. 新增bootloader配置
+	
+EP110202_BLE_Vehicle_V05:
+	1. BLE CAN诊断ID由609改成639
+EP110202_BLE_Vehicle_V07:	
+	增加stop时重新初始化UWB
+
+EP110202_BLE_Vehicle_V0B:
+	1.蓝牙断开超时时间10S=>3S
+	2.增加诊断指令0x631/0x639
+
+EP110202_BLE_Vehicle_V0C:
+1. 测距开始10S后若没收到定位2A0报文，停止测距；

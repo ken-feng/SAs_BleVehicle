@@ -1,0 +1,725 @@
+2023/09/15: 16:06:42(611): [381, vApplicationInit] ## [L.1]  
+[382, vApplicationInit] ## [L.1]  >>---------------------------------------------------
+[383, vApplicationInit] ## [L.1]  Welcome Enter Application
+[384, vApplicationInit] ## [L.1]  build in (Sep  5 2023 15:03:14)
+[385, vApplicationInit] ## [L.1]  Project Version: EP11020302_BLE_Vehicle: 0b00 
+[386, vApplicationInit] ## [L.1]  Log level is : L.8
+[387, vApplicationInit] ## [L.1]  >>---------------------------------------------------
+[388, vApplicationInit] ## [L.1]  
+2023/09/15: 16:06:42(838): [30, ccc_dk_func_send_apdu_to_vehicle_se] ## vehicle_se_cmd: length=[5] ==>
+fe 31 00 00 00 
+
+2023/09/15: 16:06:43(048): [37, ccc_dk_func_send_apdu_to_vehicle_se] ## vehicle_se_resp: length=[5] ==>
+59 22 23 05 51 
+
+[30, ccc_dk_func_send_apdu_to_vehicle_se] ## vehicle_se_cmd: length=[18] ==>
+00 a4 04 00 0d a0 00 00 08 09 43 43 43 44 4b 56 
+76 31 
+
+[37, ccc_dk_func_send_apdu_to_vehicle_se] ## vehicle_se_resp: length=[5] ==>
+5b 02 01 00 5c 
+
+[30, ccc_dk_func_send_apdu_to_vehicle_se] ## vehicle_se_cmd: length=[11] ==>
+80 33 99 99 06 55 51 54 65 63 68 
+
+[37, ccc_dk_func_send_apdu_to_vehiclese] ## vehicle_se_resp: length=[5] ==>
+ea 01 00 00 00 
+
+[151, ccc_dk_print_version] ## COS Version: length=[2] ==>
+01 03 
+
+[152, ccc_dk_print_version] ## CCC Version: length=[2] ==>
+00 03 
+
+[153, ccc_dk_print_version] ## SDK Version: length=[2] ==>
+012023/09/15: 16:06:43(094):  04 
+
+2023/09/15: 16:06:43(794): [30, ccc_dk_func_send_apdu_to_vehicle_se] ## vehicle_se_cmd: length=[72] ==>
+80 7b 00 00 43 c0 41 04 ac d0 d4 c2 63 ce 92 0f 
+45 d8 15 1c 87 c3 9f 6d d0 70 45 ab 9f 4e 6c 22 
+84 e8 b6 a1 83 d1 e7 00 a3 54 3d a9 b8 91 ab e4 
+4d ce 43 c1 12 7f d9 c7 69 1b 7a db 30 a2 4f 51 
+32 bc d1 16 c2 93 80 e2 
+
+2023/09/15: 16:06:43(889): [37, ccc_dk_func_send_apdu_to_vehicle_se] ## vehicle_se_resp: length=[5] ==>
+c1 10 4f 8e aa 
+
+2023/09/15: 16:06:44(603): [231, ccc_dk_init_on_reset] ## scKey: length=[16] ==>
+69 b1 e7 32 41 91 71 10 92 53 52 56 9a fe 13 38 
+
+[232, ccc_dk_init_on_reset] ## scIv: length=[16] ==>
+03 0a e2 3b e3 e3 8f 62 7f c5 55 23 00 93 d5 d0 
+
+[30, ccc_dk_func_send_apdu_to_vehicle_se] ## vehicle_se_cmd: length=[37] ==>
+80 7b 01 00 20 b0 2c f8 52 43 8b 5f 1f c8 73 e5 
+92 b9 5b 98 00 ee 54 82 30 50 f8 a2023/09/15: 16:06:44(634): 8 72 c5 8b 67 
+6a 97 35 ae 43 
+
+[37, ccc_dk_func_send_apdu_to_vehicle_se] ## vehicle_se_resp: length=[5] ==>
+90 00 4f 8e aa 
+
+2023/09/15: 16:06:44(668): [106, API_UQ_Device_Reset] ## UCI Specification Version : 01 05
+[107, API_UQ_Device_Reset] ## CCC Specification Version : 30 2e 32 2e 36 00 00 00
+[108, API_UQ_Device_Reset] ## Device Name : 52 41 4e 47 45 52 34 00
+[109, API_UQ_Device_Reset] ## Firmware Version : 02 00 00
+[110, API_UQ_Device_Reset] ## Dsp Version : 02 12 00
+[111, API_UQ_Device_Reset] ## Ranger4 Version : 04 2c 
+[112, API_UQ_Device_Reset] ## UQUWB SDK Version : : length=[3] ==>
+03 09 00 
+
+[137, API_UQ_Anchor_Wakup] ## [L.5]  RANGING WAKEUP DONE . 
+[183, API_UQ_Anchor_Wakup] ## Get Device Info : : length=[64] ==>
+00 01 00 34 a0 02 01 05 a1 08 30 2e 32 2e 36 00 
+00 00 e3 08 52 41 4e 47 45 52 34 00 e4 03 02 00 
+00 e5 02 16 00 e6 08 d0 84 52023/09/15: 16:06:44(699): f 1d 00 00 00 00 e7 
+03 02 14 00 e8 02 04 2c 00 00 00 00 00 00 00 00 
+
+[970, BleApp_Config] ## *******hw_flash_read:: length=[7] ==>
+01 e0 47 aa 37 60 00 
+
+[489, BleApp_Start] ## [L.1]  
+
+Scanning...
+
+[768, BleApp_GenericCallback] ## [L.1]  BLE MAC: 00:60:37:aa:46:f7
+[848, BleApp_GenericCallback] ## [L.1]  gLePhyEvent_c....phyEventType:0 deviceId:165 txPhy:165 rxPhy:165
+[871, ble_ccc_process] ## [L.7]  BLE Connected DeviceId Not Found, Please Check!!!
+2023/09/15: 16:06:45(701): [372, BleChangeWorkMode] ## [L.1]  Stop Scan!!! 
+2023/09/15: 16:06:46(705): [416, BleChangeWorkMode] ## [L.1]  Start Adv Private!!! 
+[768, BleApp_GenericCallback] ## [L.1]  BLE MAC: 00:60:37:aa:46:f7
+[822, BleApp_GenericCallback] ## [L.1]  Advertising Device Name:[EP010201006037AA46F7]
+[823, BleApp_GenericCallback] ## [L.1]  Start Advertising, advMode:0 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:06:47(693): [381, BleChangeWorkMode] ## [L.1]  Stop Adv Private!!! 
+[402, BleChangeWorkMode] ## [L.1]  Start Scan!!! 
+[489, BleApp_Start] ## [L.1]  
+
+Scanning...
+
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:06:48(707): [372, BleChangeWorkMode] ## [L.1]  Stop Scan!!! 
+2023/09/15: 16:06:49(707): [416, BleChangeWorkMode] ## [L.1]  Start Adv Private!!! 
+[768, BleApp_GenericCallback] ## [L.1]  BLE MAC: 00:60:37:aa:46:f7
+[822, BleApp_GenericCallback] ## [L.1]  Advertising Device Name:[EP010201006037AA46F7]
+[823, BleApp_GenericCallback] ## [L.1]  Start Advertising, advMode:0 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:06:50(704): [381, BleChangeWorkMode] ## [L.1]  Stop Adv Private!!! 
+[402, BleChangeWorkMode] ## [L.1]  Start Scan!!! 
+[489, BleApp_Start] ## [L.1]  
+
+Scanning...
+
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:06:50(737): 
+[1011, BleApp_ScanningCallback] ## [L.1]  Begin Connect!!!
+Name:FITFOB006037AA47E0    MAC: 00:60:37:aa:47:e0   
+
+[1011, BleApp_ScanningCallback] ## [L.1]  Begin Connect!!!
+2023/09/15: 16:06:50(770): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:00 
+[1085, BleApp_ConnectionCallback] ## [L.1]  Connection CB: DID=[0] EVT=[0x0]
+[1112, BleApp_ConnectionCallback] ## Phone Address: : length=[6] ==>
+00 60 37 aa 47 e0 
+
+[807, ble_ccc_process] ## [L.7]  CCC Logic ChannelId : 2 
+[30, ccc_dk_func_send_apdu_to_vehicle_se] [589, BleApp_HandleControllerNotification] ## vehicle_se_cmd: length=[5] ==>[L.1]  CONN Created with device:0x00 with timestamp:0x3339
+
+80 78 02 00 00 
+
+[37, ccc_dk_func_send_apdu_to_vehicle_se] ## vehicle_se_resp: length=[5] ==>
+90 00 00 00 00 
+
+2023/09/15: 16:06:50(816): [1581, App_HandleHostMessageInput] ## [L.1]  MsgType:00  gAppGattClientProcedureMsg_c:11853 
+[1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:13 
+[1085, BleApp_ConnectionCallback] ## [L.1]  Connection CB: DID=[0] EVT=[0x13]
+[1180, BleApp_ConnectionCallback] ## [L.1]  Le Data Length Changed
+2023/09/15: 16:06:50(864): [1581, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGattClientProcedureMsg_c:11853 
+2023/09/15: 16:06:50(977): [1581, App_HandleHostMessageInput] ## [L.1]  MsgType:04  gAppGattClientProcedureMsg_c:11853 
+[1551, BleApp_StoreServiceHandles] ## [L.1]  bleResult:0x00  adv lePsm:0x6020 
+[1679, BleApp_StateMachineHandler] ## [L.1]  L2CAP CONNECT!!! bleResult:0x00 
+[1581, App_HandleHostMessageInput] ## [L.1]  MsgType:07  gAppGattClientProcedureMsg_c:11853 
+2023/09/15: 16:06:51(027): [1634, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppL2caLeControlMsg_c:118f9 
+[634, BleApp_L2capPsmControlCallback] ## [L.1]  l2capControlMessageType: 0x01 
+[661, BleApp_L2capPsmControlCallback] ## [L.1]  L2CAP Connect Success,peerMps: 0x00f7 mtu: 0x0200 initialCredits: 0xffdc DeviceId: 0x00 Channel Id:0x0040 
+[681, BleApp_L2capPsmControlCallback] ## [L.1]  Device Is Bonded !! Enter Gap EncryptLink!!! 
+[1620, App_HandleHostMessageInput] ## [L.1]  MsgType:40  gAppL2caLeDataMsg_c:118cd 
+[617, BleApp_L2capPsmDataCallback] ## [L.1]  L2CAP lePsm:0x0040 deviceId:0x00 
+[619, BleApp_L2capPsmDataCallback] ## L2CAP Receive Data:: length=[27] ==>
+05 0d 00 17 00 0b 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 01 00 00 
+
+[98, ccc_api_data_request] ## ble_data_request: length=[27] ==>
+05 0d 00 17 00 0b 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 01 00 00 
+
+[330, es_sendCANData] ## [L.7]  SPI Send Data ID: 0x101 
+[408, es_sendCANData] ## CAN Send Data:: length=[64] ==>
+00 0b 00 00 00 00 2023/09/15: 16:06:51(072): 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+[323, es_sendCANData] ## [L.7]  CAN Send Data ID: 0x101 
+[408, es_sendCANData] ## CAN Send Data:: length=[64] ==>
+00 0b 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+[755, ble_ccc_uwb_process] ## UWB Receive Data:: length=[65] ==>
+03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+02023/09/15: 16:06:51(114): 0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 
+
+[1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0b 
+[1085, BleApp_ConnectionCallback] ## [L.1]  Connection CB: DID=[0] EVT=[0xb]
+[1306, BleApp_ConnectionCallback] ## [L.1]  Notify CCC SDK
+[1309, BleApp_ConnectionCallback] #2023/09/15: 16:06:51(148): # [L.1]  Encryption Success
+[1935, BleApp_PairingSuccessCallback] ## [L.1]  BleApp_PairingSuccessCallback !!!!!! 
+
+
+
+
+
+
+
+
+
+
+[284, ble_ccc_l2cap_send_data] ## [1953, BleApp_PairingSuccessCallback] ## [L.1]  MTU 247
+L2CAP Send Data:: length=[23] ==>
+01 0b 00 13 00 a4 04 00 0d a0 00 00 08 09 43 43 
+43 44 4b 41 76 31 00 
+
+[286, ble_ccc_l2cap_send_data] ## [L.1]  Send Result:0x00 
+2023/09/15: 16:06:51(178): [1620, App_HandleHostMessageInput] ## [L.1]  MsgType:40  gAppL2caLeDataMsg_c:118cd 
+[617, BleApp_L2capPsmDataCallback] ## [L.1]  L2CAP lePsm:0x0040 deviceId:0x00 
+[619, BleApp_L2capPsmDataCallback] ## L2CAP Receive Data:: length=[10] ==>
+01 0c 00 06 5c 02 01 00 90 00 
+
+[98, ccc_api_data_request] ## ble_data_request: length=[10] ==>
+01 0c 00 06 5c 02 01 00 90 00 
+
+[30, ccc_dk_func_send_apdu_to_vehicle_se] ## vehicle_se_cmd: length=[5] ==>
+80 c2 00 02 00 
+
+2023/09/15: 16:06:51(242): [37, ccc_dk_func_send_apdu_to_vehicle_se] ## vehicle_se_resp: length=[5] ==>
+87 41 04 ee bd 
+
+[284, ble_ccc_l2cap_send_data] ## L2CAP Send Data:: length=[108] ==>
+01 0b 00 68 80 80 00 10 63 5c 02 01 00 87 41 04 
+ee bd b8 70 38 b9 8e cc b7 7c 63 62 1b f5 e1 93 
+2a 91 df 12 f4 96 ae 03 b9 6e d1 fe e4 fe 5f a5 
+4d fc ea 88 89 4d 2e 95 f1 37 a7 1f 53 d8 c4 c0 
+ac 54 8f 81 f7 26 47 87 9d 15 8f e1 d3 79 a2 8f 
+4c 10 01 d0 3d bd 84 9c 29 85 a1 8e a2 f6 da 1b 
+a0 ab 4d 08 88 88 88 88 88 88 88 88 
+
+[286, ble_ccc_l2cap_send_data] ## [L.1]  Send Res2023/09/15: 16:06:51(272): ult:0x00 
+2023/09/15: 16:06:51(352): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:51(401): [1620, App_HandleHostMessageInput] ## [L.1]  MsgType:40  gAppL2caLeDataMsg_c:118cd 
+[617, BleApp_L2capPsmDataCallback] ## [L.1]  L2CAP lePsm:0x0040 deviceId:0x00 
+[619, BleApp_L2capPsmDataCallback] ## L2CAP Receive Data:: length=[73] ==>
+01 0c 00 45 86 41 04 9b e5 e5 a4 37 73 8b db 54 
+ae 04 b4 5d be 0f 48 96 4c 8b 14 b4 3c cc da f1 
+64 a8 7e cf a6 81 a6 a0 e2 1d 00 fe 6b 27 06 61 
+18 6a f2 b4 d6 3a 09 d7 5d 3a e0 ff c5 aa 28 cf 
+f1 32 14 a8 9d 0a 52 90 00 
+
+[98, ccc_api_data_request] ## ble_data_request: length=[73] ==>
+01 0c 00 45 86 41 04 9b e5 e5 a4 37 73 8b db 542023/09/15: 16:06:51(432):  
+ae 04 b4 5d be 0f 48 96 4c 8b 14 b4 3c cc da f1 
+64 a8 7e cf a6 81 a6 a0 e2 1d 00 fe 6b 27 06 61 
+18 6a f2 b4 d6 3a 09 d7 5d 3a e0 ff c5 aa 28 cf 
+f1 32 14 a8 9d 0a 52 90 00 
+
+[30, ccc_dk_func_send_apdu_to_vehicle_se] ## vehicle_se_cmd: length=[95] ==>
+80 80 00 02 5a 86 41 04 9b e5 e5 a4 37 73 8b db 
+54 ae 04 b4 5d be 0f 48 96 4c 8b 14 b4 3c cc da 
+f1 64 a8 7e cf a6 81 a6 a0 e2 1d 00 fe 6b 27 06 
+61 18 6a f2 b42023/09/15: 16:06:51(464):  d6 3a 09 d7 5d 3a e0 ff c5 aa 28 
+cf f1 32 14 a8 9d 0a 52 38 02 00 10 17 0d 32 32 
+30 37 32 31 32 30 35 35 33 34 5a 5c 02 01 00 
+
+2023/09/15: 16:06:51(543): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[37, ccc_dk_func_send_apdu_to_vehicle_se] ## vehicle_se_resp: length=[5] ==>
+80 81 00 00 42 
+
+[284, ble_ccc_l2cap_send_data] ## L2CAP Send Data:: length=[75] ==>
+01 0b 00 47 80 81 00 00 42 9e 40 6f bf 15 1e 74 
+95 97 92 1b ec 41 25 33 01 f1 db 88 59 0a 7e 2023/09/15: 16:06:51(574): ba 
+32 14 a4 3f 27 a5 b2 ec ab 3d 6f bc 6f 1b 9d df 
+48 cf fd 26 6b c8 ed f9 54 72 80 ca b9 7e d9 61 
+70 e4 33 dc a6 59 00 53 a6 f3 37 
+
+[286, ble_ccc_l2cap_send_data] ## [L.1]  Send Result:0x00 
+2023/09/15: 16:06:51(703): [372, BleChangeWorkMode] ## [L.1]  Stop Scan!!! 
+2023/09/15: 16:06:51(750): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:51(942): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[1620, App_HandleHostMessageInput] ## [L.1]  MsgType:40  gAppL2caLeDataMsg_c:118cd 
+[617, BleApp_L2capPsmDataCallback] ## [L.1]  L2CAP lePsm:0x0040 deviceId:0x00 
+[619, BleApp_L2capPsmDataCallback] ## L2CAP Receive Data:: length=[110] ==>
+01 0c 00 6a 15 fb e7 c3 4b 30 ad a9 e9 a7 e3 59 
+c2 98 71 96 d3 42 ee c2 0f 03 2023/09/15: 16:06:51(975): 61 74 cc 2a e8 57 
+6c a7 97 c8 20 36 82 54 a6 af e5 7a 7e 92 d3 b1 
+d9 fe d7 ff 20 7d d7 8c 1b 3e 8d 6a 5b 76 3b 32 
+01 39 e3 52 be 76 5d 93 7c 28 16 9e de 4c ba 6f 
+ee 44 54 e2 d2 85 8f c0 c6 cc 03 34 c9 cf a8 29 
+1c 95 36 bf a7 dc 8f 45 4e 83 48 06 90 00 
+
+[98, ccc_api_data_request] ## ble_data_request: length=[110] ==>
+01 0c 00 6a 15 fb e7 c3 4b 30 ad a9 e9 a7 e3 59 
+c2 98 71 96 d3 42 ee c2 0f 03 61 74 cc 2a e2023/09/15: 16:06:52(007): 8 57 
+6c a7 97 c8 20 36 82 54 a6 af e5 7a 7e 92 d3 b1 
+d9 fe d7 ff 20 7d d7 8c 1b 3e 8d 6a 5b 76 3b 32 
+01 39 e3 52 be 76 5d 93 7c 28 16 9e de 4c ba 6f 
+ee 44 54 e2 d2 85 8f c0 c6 cc 03 34 c9 cf a8 29 
+1c 95 36 bf a7 dc 8f 45 4e 83 48 06 90 00 
+
+[30, ccc_dk_func_send_apdu_to_vehicle_se] ## vehicle_se_cmd: length=[109] ==>
+80 81 00 02 68 15 fb e7 c3 4b 30 ad a9 e9 a7 e3 
+59 c2 98 71 96 d3 42 ee c2 0f 03 61 74 cc 22023/09/15: 16:06:52(039): a e8 
+57 6c a7 97 c8 20 36 82 54 a6 af e5 7a 7e 92 d3 
+b1 d9 fe d7 ff 20 7d d7 8c 1b 3e 8d 6a 5b 76 3b 
+32 01 39 e3 52 be 76 5d 93 7c 28 16 9e de 4c ba 
+6f ee 44 54 e2 d2 85 8f c0 c6 cc 03 34 c9 cf a8 
+29 1c 95 36 bf a7 dc 8f 45 4e 83 48 06 
+
+2023/09/15: 16:06:52(149): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[416, BleChangeWorkMode] ## [L.1]  Start Adv Private!!! 
+[768, BleApp_GenericCallback] ## [L.1]  BLE MAC: 00:60:37:aa:46:f7
+[822, BleApp_GenericCallback] ## [L.1]  Advertising Device Name:[EP010201006037AA46F7]
+[823, BleApp_GenericCallback] ## [L.1]  Start Advertising, advMode:0 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:06:52(212): [37, ccc_dk_func_send_apdu_to_vehicle_se] ## vehicle_se_resp: length=[5] ==>
+4e 02 00 00 90 
+
+[284, ble_ccc_l2cap_send_data] ## L2CAP Send Data:: length=[9] ==>
+01 0b 00 05 80 71 00 00 00 
+
+[286, ble_ccc_l2cap_send_data] ## [L.1]  Send Result:0x00 
+2023/09/15: 16:06:52(341): [1620, App_HandleHostMessageInput] ## [L.1]  MsgType:40  gAppL2caLeDataMsg_c:118cd 
+[617, BleApp_L2capPsmDataCallback] ## [L.1]  L2CAP lePsm:0x0040 deviceId:0x00 
+[619, BleApp_L2capPsmDataCallback] ## L2CAP Receive Data:: length=[6] ==>
+01 0c 00 02 90 00 
+
+[98, ccc_api_data_request] ## [1563, App_HandleHostMessageInput] ## ble_data_request: length=[6] ==>[L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+
+01 0c 00 02 90 00 
+
+[30, ccc_dk_func_send_apdu_to_vehicle_se] ## vehicle_se_cmd: length=[5] ==>
+80 7c 00 02 00 
+
+2023/09/15: 16:06:52(389): [37, ccc_dk_func_send_apdu_to_vehicle_se] ## vehicle_se_resp: length=[5] ==>
+2a 3d e1 27 4c 
+
+[315, es_sendCANData] ## [L.7]  SPI Send Data ID: 0x100 
+[137, API_UQ_Anchor_Wakup] ## [L.5]  RANGING WAKEUP DONE . 
+[183, API_UQ_Anchor_Wakup] ## Get Device Info : : length=[64] ==>
+00 01 00 34 a0 02 01 05 a1 08 30 2e 32 2e 36 00 
+00 00 e3 08 52 41 4e 47 45 52 34 00 e4 03 02 2023/09/15: 16:06:52(421): 00 
+00 e5 02 16 00 e6 08 d0 84 5f 1d 00 00 00 00 e7 
+03 02 14 00 e8 02 04 2c 00 00 00 00 00 00 00 00 
+
+[408, es_sendCANData] ## CAN Send Data:: length=[64] ==>
+ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+[308, es_sendCANData] ## [L.7]  CAN Send Data ID: 0x100 
+[408, s_sendCANData] ## CAN Send Data:: length=[64] ==>
+ff 00 00 00 00 00 00 00 00 00 00 00 00 002023/09/15: 16:06:52(453):  00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+[284, ble_ccc_l2cap_send_data] ## L2CAP Send Data:: length=[6] ==>
+03 11 00 02 01 00 
+
+[286, ble_ccc_l2cap_send_data] ## [L.1]  Send Result:0x00 
+[755, ble_ccc_uwb_process] ## UWB Receive Data:: length=[65] ==>
+01 00 a1 b2 c2 d2 e2 f2 02 02 02 02 02 02 02 02 
+02 ee 04 01 04 00 01 00 00 03 00 11 22 03 01 7f 
+00 f0 ff 00 f0 00 00 00 00 00 00 00 00 00 00 02023/09/15: 16:06:52(485): 0 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 
+
+2023/09/15: 16:06:52(547): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:52(707): [381, BleChangeWorkMode] ## [L.1]  Stop Adv Private!!! 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:06:52(739): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:52(944): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[284, ble_ccc_l2cap_send_data] ## L2CAP Send Data:: length=[16] ==>
+02 01 00 0c 02 01 00 04 00 01 00 00 03 00 11 22 
+
+[286, ble_ccc_l2cap_send_data] ## [L.1]  Send Result:0x00 
+2023/09/15: 16:06:52(994): [1620, App_HandleHostMessageInput] ##[L.1]  MsgType:40  gAppL2caLeDataMsg_c:118cd 
+[617, BleApp_L2capPsmDataCallback] ## [L.1]  L2CAP lePsm:0x0040 deviceId:0x00 
+[619, BleApp_L2capPsmDataCallback] ## L2CAP Receive Data:: length=[9] ==>
+02 02 00 05 01 00 00 01 00 
+
+[98, ccc_api_data_request] ## ble_data_request: length=[9] ==>
+02 02 00 05 01 00 00 01 00 
+
+[59, uwb_ranging_service_ranging_capability_response_process] ## [L.7]  timeSyncTriggerConditions=1
+[848, BleApp_GenericCallback] ## [L.1]  gLePhyEvent_c....phyEventType:1 deviceId:0 txPhy:1 rxPhy:1
+2023/09/15: 16:06:53(154): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[416, BleChangeWorkMode] ## [L.1]  Start Adv Private!!! 
+[768, BleApp_GenericCallback] ## [L.1]  BLE MAC: 00:60:37:aa:46:f7
+[822, BleApp_GenericCallback] ## [L.1]  Advertising Device Name:[EP010201006037AA46F7]
+[823, BleApp_GenericCallback] ## [L.1]  Start Advertising, advMode:0 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+[848, BleApp_GenericCallback] ## [L.1]  gLePhyEvent_c....phyEventType:2 deviceId:0 txPhy:2 rxPhy:2
+2023/09/15: 16:06:53(202): [1620, App_HandleHostMessageInput] ## [L.1]  MsgType:40  gAppL2caLeDataMsg_c:118cd 
+[617, BleApp_L2capPsmDataCallback] ## [L.1]  L2CAP lePsm:0x0040 deviceId:0x00 
+[619, BleApp_L2capPsmDataCallback] ## L2CAP Receive Data:: length=[27] ==>
+05 0d 00 17 00 72 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 01 00 00 
+
+[98, ccc_api_data_request] ## ble_data_request: length=[27] ==>
+05 0d 00 17 00 72 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 01 00 00 
+
+[330, es_sendCANData] ## [L.7]  SPI Send Data ID: 0x101 
+[408, es_sendCANData] ## CAN Send Data:: length=[64] ==>
+00 72 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 2023/09/15: 16:06:53(233): 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+[323, es_sendCANData] ## [L.7]  CAN Send Data ID: 0x101 
+[408, es_sendCANData] ## CAN Send Data:: length=[64] ==>
+00 72 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+[755, ble_ccc_uwb_process] ## UWB Receive Data:: length=[65] ==>
+03 00 00 00 00 00 00 002023/09/15: 16:06:53(265):  00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 
+
+2023/09/15: 16:06:53(342): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:53(519): [284, ble_ccc_l2cap_send_data] ## L2CAP Send Data:: length=[14] ==>
+02 03 00 0a 01 00 00 01 da 1b a0 ab 00 03 
+
+[286, ble_ccc_l2cap_send_data] ## [L.1]  Send Result:0x00 
+[1620, App_HandleHostMessageInput] ## [L.1]  MsgType:40  gAppL2caLeDataMsg_c:118cd 
+[617, BleApp_L2capPsmDataCallback] ## [L.1]  L2CAP lePsm:0x0040 deviceId:0x00 
+[619, BleApp_L2capPsmDataCallback] ## L2CAP Receive Data:: length=[12] ==>
+02 04 00 08 01 08 00 00 00 01 09 80 
+
+[1563, App2023/09/15: 16:06:53(551): _HandleHostMessageInput] ## [98, ccc_api_data_request] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+ble_data_request: length=[12] ==>
+02 04 00 08 01 08 00 00 00 01 09 80 
+
+[284, ble_ccc_l2cap_send_data] ## L2CAP Send Data:: length=[13] ==>
+02 05 00 09 01 06 01 06 00 f0 ff 00 80 
+
+[286, ble_ccc_l2cap_send_data] ## [L.1]  Send Result:0x00 
+2023/09/15: 16:06:53(584): [1620, App_HandleHostMessageInput] ## [L.1]  MsgType:40  gAppL2caLeDataMsg_c:118cd 
+[617, BleApp_L2capPsmDataCallback] ## [L.1]  L2CAP lePsm:0x0040 deviceId:0x00 
+[619, BleApp_L2capPsmDataCallback] ## L2CAP Receive Data:: length=[21] ==>
+02 06 00 11 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 09 
+
+[98, ccc_api_data_request] ## ble_data_request: length=[21] ==>
+02 06 00 11 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 09 
+
+[345, es_sendCANData] ## [L.7]  SPI Send Data ID: 0x102 
+[408, es_sendCANData] ## CAN Send Data:: length=[64] ==>
+da 1b a0 ab 00 01 00 01 09 06 06 80 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 09 03 01 01 
+01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 2023/09/15: 16:06:53(615): 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+2023/09/15: 16:06:53(693): [381, BleChangeWorkMode] ## [L.1]  Stop Adv Private!!! 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+[338, es_sendCANData] ## [L.7]  CAN Send Data ID: 0x102 
+[408, es_sendCANData] ## CAN Send Data:: length=[64] ==>
+da 1b a0 ab 00 01 00 01 09 06 06 80 00 00 00 2023/09/15: 16:06:53(726): 00 
+00 00 00 00 00 00 00 00 00 00 00 00 09 03 01 01 
+01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+[1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:53(836): [360, es_sendCANData] ## [L.7]  SPI Send Data ID: 0x104 
+2023/09/15: 16:06:53(947): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:54(154): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[416, BleChangeWorkMode] ## [L.1]  Start Adv Private!!! 
+[768, BleApp_GenericCallback] ## [L.1]  BLE MAC: 00:60:37:aa:46:f7
+[822, BleApp_GenericCallback] ## [L.1]  Advertising Device Name:[EP010201006037AA46F7]
+[823, BleApp_GenericCallback] ## [L.1]  Start Advertising, advMode:0 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:06:54(344): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:54(392): [408, es_sendCANData] ## CAN Send Data:: length=[64] ==>
+da 1b a0 ab d4 dd 2a b8 be 87 d3 a6 f2 5d e9 6a 
+17 8d 8d 40 c3 52 92 9c e2 22 85 3a a6 e3 22 ca 
+86 74 53 0c 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+[353, es_sendCANData] ## [L.7]  CAN Send Data ID: 0x104 
+[408, es_sendCANData] ## CAN Send Data:: length=[64] ==>
+da 1b a0 ab d4 dd 2a b8 be 87 d3 a6 f2 5d e9 6a 
+17 8d 8d 40 c3 52 92 9c e2 22 2023/09/15: 16:06:54(424): 85 3a a6 e3 22 ca 
+86 74 53 0c 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+[755, ble_ccc_uwb_process] ## UWB Receive Data:: length=[65] ==>
+06 00 da 1b a0 ab 04 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 
+
+2023/09/15: 16:06:54(551): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:54(662): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+00 00 00 00 00 00 27 00 26 00 
+
+2023/09/15: 16:06:54(695): [381, BleChangeWorkMode] ## [L.1]  Stop Adv Private!!! 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:06:54(743): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:54(854): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+00 00 27 00 26 00 28 00 27 00 
+
+2023/09/15: 16:06:54(950): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:55(043): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+26 00 28 00 27 00 28 00 29 00 
+
+2023/09/15: 16:06:55(140): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[416, BleChangeWorkMode] ## [L.1]  Start Adv Private!!! 
+[768, BleApp_GenericCallback] ## [L.1]  BLE MAC: 00:60:37:aa:46:f7
+[822, BleApp_GenericCallback] ## [L.1]  Advertising Device Name:[EP010201006037AA46F7]
+[823, BleApp_GenericCallback] ## [L.1]  Start Advertising, advMode:0 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:06:55(236): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+27 00 28 00 29 00 2a 00 29 00 
+
+2023/09/15: 16:06:55(347): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:55(427): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+29 00 2a 00 29 00 26 00 27 00 
+
+2023/09/15: 16:06:55(555): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:55(618): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+29 00 26 00 27 00 27 00 2b 00 
+
+2023/09/15: 16:06:55(699): [381, BleChangeWorkMode] ## [L.1]  Stop Adv Private!!! 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:06:55(747): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:55(810): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+27 00 27 00 2b 00 28 00 29 00 
+
+2023/09/15: 16:06:55(955): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:56(002): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+2b 00 28 00 29 00 28 00 2b 00 
+
+2023/09/15: 16:06:56(146): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[416, BleChangeWorkMode] ## [L.1]  Start Adv Private!!! 
+[768, BleApp_GenericCallback] ## [L.1]  BLE MAC: 00:60:37:aa:46:f7
+[822, BleApp_GenericCallback] ## [L.1]  Advertising Device Name:[EP010201006037AA46F7]
+[823, BleApp_GenericCallback] ## [L.1]  Start Advertising, advMode:0 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:06:56(192): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+29 00 28 00 2b 00 28 00 24 00 
+
+2023/09/15: 16:06:56(353): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:56(398): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+2b 00 28 00 24 00 26 00 29 00 
+
+2023/09/15: 16:06:56(541): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:56(589): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+24 00 26 00 29 00 29 00 27 00 
+
+2023/09/15: 16:06:56(701): [381, BleChangeWorkMode] ## [L.1]  Stop Adv Private!!! 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:06:56(749): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=2023/09/15: 16:06:56(781): [10] ==>
+29 00 29 00 27 00 27 00 27 00 
+
+2023/09/15: 16:06:56(940): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=2023/09/15: 16:06:56(972): [10] ==>
+27 00 27 00 27 00 25 00 25 00 
+
+2023/09/15: 16:06:57(148): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[416, BleChangeWorkMode] ## [L.1]  Start Adv Private!!! 
+[768, BleApp_GenericCallback] ## [L.1]  BLE MAC: 00:60:37:aa:46:f7
+[822, BleApp_GenericCallback] ## [L.1]  Advertising Device Name:[EP010201006037AA46F7]
+[823, BleApp_GenericCallback] ## [L.1]  Start Advertising, advMode:0 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+[676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+27 00 25 00 25 00 28 00 2c 00 
+
+2023/09/15: 16:06:57(355): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+25 00 28 00 2c 00 26 00 28 00 
+
+2023/09/15: 16:06:57(546): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+2c 00 26 00 28 00 28 00 25 [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+00 
+
+2023/09/15: 16:06:57(705): [381, BleChangeWorkMode] ## [L.1]  Stop Adv Private!!! 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:06:57(737): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+28 00 28 00 25 00 27 00 2a 00 
+
+[1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:57(927): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+25 00 27 00 2a 00 29 00 27 00 
+
+[1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:58(118): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+2a 00 29 00 27 00 2a 00 26 00 
+
+2023/09/15: 16:06:58(165): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[416, BleChangeWorkMode] ## [L.1]  Start Adv Private!!! 
+[768, BleApp_GenericCallback] ## [L.1]  BLE MAC: 00:60:37:aa:46:f7
+[822, BleApp_GenericCallback] ## [L.1]  Advertising Device Name:[EP010201006037AA46F7]
+[823, BleApp_GenericCallback] ## [L.1]  Start Advertising, advMode:0 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:06:58(307): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+27 00 2a 00 26 00 27 00 27 00 
+
+2023/09/15: 16:06:58(355): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:58(499): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+26 00 27 00 27 00 29 00 2a 00 
+
+2023/09/15: 16:06:58(546): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:58(690): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+27 00 29 00 2a 00 28 00 29 00 
+
+[381, BleChangeWorkMode] ## [L.1]  Stop Adv Private!!! 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertintMsg_c:00 
+2023/09/15: 16:06:58(753): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:58(881): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+2a 00 28 00 29 00 29 00 27 00 
+
+2023/09/15: 16:06:58(945): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:59(071): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+29 00 29 00 27 00 2c 00 2a 00 
+
+2023/09/15: 16:06:59(151): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[416, BleChangeWorkMode] ## [L.1]  Start Adv Private!!! 
+[768, BleApp_GenericCallback] ## [L.1]  BLE MAC: 00:60:37:aa:46:f7
+[822, BleApp_GenericCallback] ## [L.1]  Advertising Device Name:[EP010201006037AA46F7]
+[823, BleApp_GenericCallback] ## [L.1]  Start Advertising, advMode:0 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:06:59(277): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+27 00 2c 00 2a 00 26 00 29 00 
+
+2023/09/15: 16:06:59(340): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:59(469): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+2a 00 26 00 29 00 27 00 2a 00 
+
+2023/09/15: 16:06:59(547): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:06:59(659): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+29 00 27 00 2a 00 2c 00 28 00 
+
+2023/09/15: 16:06:59(706): [381, BleChangeWorkMode] ## [L.1]  Stop Adv Private!!! 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertintMsg_c:00 
+2023/09/15: 16:06:59(755): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectinMsg_c:0e 
+2023/09/15: 16:06:59(850): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+2a 00 2c 00 28 00 28 00 28 00 
+
+2023/09/15: 16:06:59(946): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:07:00(041): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+28 00 28 00 28 00 27 00 2a 00 
+
+2023/09/15: 16:07:00(153): [1563, App_HandleHostMessageInput] ## [416, BleChangeWorkMode] ## [L.1]  Start Adv Private!!! 
+[L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[768, BleApp_GenericCallback] ## [L.1]  BLE MAC: 00:60:37:aa:46:f7
+[822, BleApp_GenericCallback] ## [L.1]  Advertising Device Name:[EP010201006037AA46F7]
+[823, BleApp_GenericCallback] ## [L.1]  Start Advertising, advMode:0 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:07:00(234): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+28 00 27 00 2a 00 29 00 29 00 
+
+2023/09/15: 16:07:00(344): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:07:00(424): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+2a 00 29 00 29 00 27 00 28 00 
+
+2023/09/15: 16:07:00(553): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:07:00(616): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+29 00 27 00 28 00 26 00 28 00 
+
+2023/09/15: 16:07:00(696): [381, BleChangeWorkMode] ## [L.1]  Stop Adv Private!!! 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:07:00(744): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:07:00(807): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+28 00 26 00 28 00 27 00 2a 00 
+
+2023/09/15: 16:07:00(947): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:07:00(995): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+28 00 27 00 2a 00 2a 00 26 00 
+
+2023/09/15: 16:07:01(154): [1563, App_HandleHostMessageInput] ## [416, BleChangeWorkMode] ## [L.1]  Start Adv Private!!! 
+[L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[768, BleApp_GenericCallback] ## [L.1]  BLE MAC: 00:60:37:aa:46:f7
+[822, BleApp_GenericCallback] ## [L.1]  Advertising Device Name:[EP010201006037AA46F7]
+[823, BleApp_GenericCallback] ## [L.1]  Start Advertising, advMode:0 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:07:01(185): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+2a 00 2a 00 26 00 27 00 29 00 
+
+2023/09/15: 16:07:01(356): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=2023/09/15: 16:07:01(388): [10] ==>
+26 00 27 00 29 00 2a 00 2a 00 
+
+2023/09/15: 16:07:01(548): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=2023/09/15: 16:07:01(580): [10] ==>
+29 00 2a 00 2a 00 29 00 29 00 
+
+2023/09/15: 16:07:01(707): [381, BleChangeWorkMode] ## [L.1]  Stop Adv Private!!! 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:07:01(756): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+2a 00 29 00 29 00 2a 00 27 00 
+
+2023/09/15: 16:07:01(944): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+29 00 2a 00 27 00 24 00 28 00 
+
+2023/09/15: 16:07:02(150): [1563, App_HandleHostMessageInput] ## [416, BleChangeWorkMode] ## [L.1]  Start Adv Private!!! 
+[L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[676, API_UQ_Ranging_Result] ## [768, BleApp_GenericCallback] ## Anchor-Distance List : : length=[10] ==>[L.1]  BLE MAC: 00:60:37:aa:46:f7
+
+27 00 [822, BleApp_GenericCallback] ## 24 [L.1]  Advertising Device Name:[EP010201006037AA46F7]
+00 [823, BleApp_GenericCallback] ## 28 [L.1]  Start Advertising, advMode:0 
+00 2a [1545, App_HandleHostMessageInput] ## 00 [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2a 00 
+
+2023/09/15: 16:07:02(339): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+28 00 2a 00 2a 00 28 00 25 00 
+
+[1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:07:02(529): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+2a 00 28 00 25 00 27 00 26 00 
+
+[1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnecionMsg_c:0e 
+2023/09/15: 16:07:02(705): [381, BleChangeWorkMode] ## [L.1]  Stop Adv Private!!! 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+[676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+25 00 27 00 26 00 28 00 29 00 
+
+2023/09/15: 16:07:02(753): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:07:02(926): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+26 00 28 00 29 00 29 00 28 00 
+
+[1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+2023/09/15: 16:07:03(118): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+29 00 29 00 28 00 26 00 28 00 
+
+2023/09/15: 16:07:03(149): [1563, App_HandleHostMessageInput] ## [416, BleChangeWorkMode] ## [L.1]  Start Adv Private!!! 
+[L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
+[768, BleApp_GenericCallback] ## [L.1]  BLE MAC: 00:60:37:aa:46:f7
+[822, BleApp_GenericCallback] ## [L.1]  Advertising Device Name:[EP010201006037AA46F7]
+[823, BleApp_GenericCallback] ## [L.1]  Start Advertising, advMode:0 
+[1545, App_HandleHostMessageInput] ## [L.1]  MsgType:02  gAppGapAdvertisementMsg_c:00 
+2023/09/15: 16:07:03(309): [676, API_UQ_Ranging_Result] ## Anchor-Distance List : : length=[10] ==>
+28 00 26 00 28 00 29 00 2a 00 
+
+2023/09/15: 16:07:03(356): [1563, App_HandleHostMessageInput] ## [L.1]  MsgType:01  gAppGapConnectionMsg_c:0e 
