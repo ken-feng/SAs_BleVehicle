@@ -750,12 +750,20 @@ void ble_ccc_can_process(cccCanId_t cccCanId)
     ccc_api_data_request(CHANNEL_ID_CAN,tmpData,65U);
 }
 
+//********************************************************************************
+//
+//********************************************************************************
 void ble_ccc_uwb_process(u8* inBuf , u16 length)
 {
     LOG_L_S_HEX(CCC_MD,"UWB Receive Data:",inBuf,length);
     ccc_api_data_request(CHANNEL_ID_SPI_UWB,inBuf,length);
 }
+//********************************************************************************
 
+
+//********************************************************************************
+//
+//********************************************************************************
 ble_ccc_queue_msg_t gRecvQueuePtr;
 void ble_ccc_process(void)
 {
@@ -764,20 +772,34 @@ void ble_ccc_process(void)
     u8 deviceId;
     u8 tmpBuf[16];
     gapPhyEvent_t* tCccLePhy;
+
 //    TP_PB2_Toggle();
+    //============================================================================
+    //
+    //============================================================================
     if(gQueueAllocFlag == 0)
     {
     	return;
     }
+    //============================================================================
+    //
+    //============================================================================
     result = ble_ccc_queue_pop((u8*)&gRecvQueuePtr);
     if (result == FALSE)
     {   /*从消息序列中未读出数据，则退出*/
         return ;
     }
+    //============================================================================
+	//
+	//============================================================================
     if (gRecvQueuePtr.evtType == CCC_EVT_IDLE)
     {
         goto LableOut;
     }
+
+    //============================================================================
+	// [ ] - Connect
+	//============================================================================
     if (gRecvQueuePtr.evtType == CCC_EVT_STATUS_CONNECT)
     {
         recordIndex = gRecvQueuePtr.dataBuff[0];
@@ -817,6 +839,9 @@ void ble_ccc_process(void)
             ccc_api_extern_event_notice(ble_ccc_ctx[recordIndex].cccLogicChannelId,EXT_EVENT_BLE_CONNECT_ON_FIRST_APPROACH,NULL,0U);
         }
     }
+    //============================================================================
+	//
+	//============================================================================
     else if (gRecvQueuePtr.evtType == CCC_EVT_STATUS_DISCONNECT)
     {
         recordIndex = ble_ccc_ctx_get_record_from_deviceId(gRecvQueuePtr.deviceId);
@@ -828,6 +853,9 @@ void ble_ccc_process(void)
         ccc_api_extern_event_notice(ble_ccc_ctx[recordIndex].cccLogicChannelId,EXT_EVENT_BLE_DISCONNECT,NULL,0U);
         core_mm_set((u8*)&ble_ccc_ctx[recordIndex],0x00,sizeof(ble_ccc_ctx_t));  
     }
+    //============================================================================
+	//
+	//============================================================================
     else if (gRecvQueuePtr.evtType == CCC_EVT_L2CAP_SETUP_COMPLETE)
     {
         recordIndex = ble_ccc_ctx_get_record_from_deviceId(gRecvQueuePtr.deviceId);
@@ -839,6 +867,9 @@ void ble_ccc_process(void)
         ble_ccc_ctx[recordIndex].channelId = core_dcm_readBig16(gRecvQueuePtr.dataBuff);
         ble_ccc_ctx[recordIndex].connectStatus = BLE_L2CAP_STATUS_CONNECT;
     }
+    //============================================================================
+	//
+	//============================================================================
     else if (gRecvQueuePtr.evtType == CCC_EVT_L2CAP_DISCONNECT)
     {
         recordIndex = ble_ccc_ctx_get_record_from_deviceId(gRecvQueuePtr.deviceId);
@@ -851,7 +882,9 @@ void ble_ccc_process(void)
         ble_ccc_ctx[recordIndex].connectStatus = BLE_L2CAP_STATUS_DISCONNECT;
         ccc_api_extern_event_notice(ble_ccc_ctx[recordIndex].cccLogicChannelId,EXT_EVENT_BLE_DISCONNECT,NULL,0U);
     }
-
+    //============================================================================
+	//
+	//============================================================================
     else if (gRecvQueuePtr.evtType == CCC_EVT_BLE_PAIR_COMPLETE)
     {
         recordIndex = ble_ccc_ctx_get_record_from_deviceId(gRecvQueuePtr.deviceId);
@@ -862,7 +895,9 @@ void ble_ccc_process(void)
         }
         ccc_api_extern_event_notice(ble_ccc_ctx[recordIndex].cccLogicChannelId,EXT_EVENT_BLE_PAIRING_AND_ENCRYPTION_SETUP_FINISH,NULL,0U);
     }
-
+    //============================================================================
+	//
+	//============================================================================
     else if (gRecvQueuePtr.evtType == CCC_EVT_LESETPHY)
     {
         deviceId = ble_ccc_ctx_get_record_from_deviceId(gRecvQueuePtr.deviceId);
@@ -893,6 +928,9 @@ void ble_ccc_process(void)
             }
         }
     }
+    //============================================================================
+	//
+	//============================================================================
     else if (gRecvQueuePtr.evtType == CCC_EVT_RECV_DATA)
     {
         recordIndex = ble_ccc_ctx_get_record_from_deviceId(gRecvQueuePtr.deviceId);
@@ -905,6 +943,9 @@ void ble_ccc_process(void)
         ccc_api_data_request(ble_ccc_ctx[recordIndex].cccLogicChannelId,gRecvQueuePtr.dataBuff, gRecvQueuePtr.length);
         // ble_ccc_send_leSetPhyRequest();
     }
+    //============================================================================
+	//
+	//============================================================================
     else if (gRecvQueuePtr.evtType == CCC_EVT_SEND_DATA)
     {
         deviceId = ble_ccc_ctx_get_deviceId_from_logic_channelId(gRecvQueuePtr.deviceId);
@@ -915,14 +956,23 @@ void ble_ccc_process(void)
         }
         ble_ccc_l2cap_send_data(deviceId, gRecvQueuePtr.dataBuff, gRecvQueuePtr.length);
     }
+    //============================================================================
+	//
+	//============================================================================
     else if (gRecvQueuePtr.evtType == CCC_EVT_RECV_CAN_DATA)
     {
         ble_ccc_can_process(gRecvQueuePtr.deviceId);
     }
+    //============================================================================
+	//
+	//============================================================================
     else if(gRecvQueuePtr.evtType == CCC_EVT_RECV_UWB_DATA)
     {
         ble_ccc_uwb_process(gRecvQueuePtr.dataBuff, gRecvQueuePtr.length);
     }
+    //============================================================================
+	//
+	//============================================================================
     else if (gRecvQueuePtr.evtType == CCC_EVT_TEST_SET_FOB_ADDR)
     {
         core_mm_copy(fobAddress,gRecvQueuePtr.dataBuff, gRecvQueuePtr.length);
@@ -944,6 +994,9 @@ void ble_ccc_process(void)
             //(void)Gap_StopScanning();
         }
     }
+    //============================================================================
+	//
+	//============================================================================
     else if(gRecvQueuePtr.evtType == CCC_EVT_SEND_PRIVATE_DATA)
     {
         deviceId = ble_ccc_ctx_get_deviceId_from_logic_channelId(gRecvQueuePtr.deviceId);
@@ -954,10 +1007,16 @@ void ble_ccc_process(void)
         }
         Ble_SendData(deviceId,gRecvQueuePtr.dataBuff,gRecvQueuePtr.length);
     }
+    //============================================================================
+	//
+	//============================================================================
     else if(gRecvQueuePtr.evtType == CCC_EVT_WRITE_WHITELIST)
     {
         ble_ccc_write_whitelist(gRecvQueuePtr.dataBuff,gRecvQueuePtr.dataBuff,gRecvQueuePtr.deviceId,gRecvQueuePtr.dataBuff);
     }
+    //============================================================================
+	//
+	//============================================================================
     else if(gRecvQueuePtr.evtType == CCC_EVT_STATUS_MAC_UPDATE)
     {
         for (u8 i = 0; i < BLE_DEIVCE_MAX_NUMBER; i++)
@@ -970,6 +1029,9 @@ void ble_ccc_process(void)
             }
         }
     }
+    //============================================================================
+	//
+	//============================================================================
     else if (gRecvQueuePtr.evtType == CCC_EVT_CMD_DISCONNECT)
     {
         deviceId = ble_ccc_ctx_get_deviceId_from_logic_channelId(gRecvQueuePtr.deviceId);
@@ -980,45 +1042,65 @@ void ble_ccc_process(void)
         }
         Gap_Disconnect (deviceId);
     }
+    //============================================================================
+	//
+	//============================================================================
     else if(gRecvQueuePtr.evtType == CCC_EVT_TIMER_HANDLER)
     {
         ccc_api_extern_event_notice(ble_ccc_ctx[recordIndex].cccLogicChannelId,EXT_EVENT_TIMER_HANDLER,gRecvQueuePtr.dataBuff,gRecvQueuePtr.length);
     }
+    //============================================================================
+	// [ UWB ] - Ranging Session Setup Request
+	//============================================================================
     else if (gRecvQueuePtr.evtType == UWB_EVT_RANGING_SESSION_SETUP_RQ)/*测距会话建立 请求*/
     {
-#ifndef FIT_DEBUG_NO_UWB         
+		#ifndef FIT_DEBUG_NO_UWB
         stUWBSDK.fpUQRangingSessionSetup(gRecvQueuePtr.dataBuff, gRecvQueuePtr.length);
         // KW38_INT_Start();
-#endif        
+		#endif
     }
+    //============================================================================
+	// [ UWB ] - Ranging Session Start Request
+	//============================================================================
     else if (gRecvQueuePtr.evtType == UWB_EVT_RANGING_SESSION_START_RQ)/*测距会话开始 请求*/
     {
-#ifndef FIT_DEBUG_NO_UWB 
+		#ifndef FIT_DEBUG_NO_UWB
         stUWBSDK.fpUQRangingCtrl(UWBRangingOPType_Start, gRecvQueuePtr.dataBuff, gRecvQueuePtr.length,stUWBSDK.fpUQSendMSG);
         // KW38_INT_Start();
         intIRQFlag = 0x00;
-#endif
+		#endif
     }
+    //============================================================================
+	// [ UWB ] - Ranging Session Start Response
+	//============================================================================
     else if (gRecvQueuePtr.evtType == UWB_EVT_INT_NOTICE)/*测距会话开始 响应*/
     {
-#ifndef FIT_DEBUG_NO_UWB 
+		#ifndef FIT_DEBUG_NO_UWB
         if(intIRQFlag == 0x01)
         {
             intIRQFlag = 0U;
             //TP_PB1_Toggle();
             stUWBSDK.fpUQRangingNTFCache(stUWBSDK.fpUQSendMSG);
         }
-        
-#endif
+		#endif
     }
+    //============================================================================
+	// [ UWB ] - Ranging Session Suspend Request
+	//============================================================================
     else if (gRecvQueuePtr.evtType == UWB_EVT_RANGING_SESSION_SUSPEND_RQ)/*测距会话挂起恢复停止 请求*/
     {
         
     }
+    //============================================================================
+    // [ UWB ] - Ranging Session Suspend Response
+	//============================================================================
     else if (gRecvQueuePtr.evtType == UWB_EVT_RANGING_SESSION_SUSPEND_RS)/*测距会话挂起恢复停止 响应*/
     {
         
     }
+    //============================================================================
+	// [ Dialog ] - For UDS on CanBus
+	//============================================================================
     else if (gRecvQueuePtr.evtType == OBD_CTRL_UWB_SESSION)/**/
     {
         LOG_L_S_HEX(CCC_MD,"UDS_CMD:",gRecvQueuePtr.dataBuff,5U);
@@ -1055,18 +1137,30 @@ void ble_ccc_process(void)
             }
         }
     }
+    //============================================================================
+	//
+	//============================================================================
     else if (gRecvQueuePtr.evtType == UWB_EVT_RECV_UART)/*测距结果通知*/
     {
         
     }
+    //============================================================================
+	//
+	//============================================================================
     else if(gRecvQueuePtr.evtType == CCC_EVENT_RSSI_UPDATE)  //rssi
     {
         ccc_api_extern_event_notice(ble_ccc_ctx[recordIndex].cccLogicChannelId, EXT_EVENT_RSSI_UPDATE, gRecvQueuePtr.dataBuff, gRecvQueuePtr.length);
     }
+    //============================================================================
+	//
+	//============================================================================
     else
     {
         /*TODO*/
     }
+    //============================================================================
+	//
+	//============================================================================
 LableOut:
     /*出栈了需要释放已申请的空间*/
     if(gRecvQueuePtr.dataBuff != NULL)
@@ -1076,6 +1170,10 @@ LableOut:
         (void)OSA_MutexUnlock(gBleCCCMutexId);
     }
 }
+
+//********************************************************************************
+//
+//********************************************************************************
 u8 cnt = 0;
 void BleCccProcess_Task(void* argument)
 {
@@ -1093,4 +1191,5 @@ void BleCccProcess_Task(void* argument)
         }
     }
 }
+//********************************************************************************
 

@@ -1,0 +1,7 @@
+ExitOnError 1
+r
+h
+loadfile "D:\UQ_p4Win\release\EVT-1_Firmware\Fob\FIT_SW_KEY_FOB_KW38_V0500_0831.hex"
+qc
+
+qc

@@ -184,6 +184,10 @@ int API_UQ_Anchor_Wakup(uint8_t* cmdin, uint16_t cmdinlens, fp_UQ_MSGSend_t fp_s
 
 	return ResCode;
 }
+
+//********************************************************************************
+//
+//********************************************************************************
 int API_UQ_Ranging_Session_Setup(uint8_t* cmdin, uint16_t cmdinlens, fp_UQ_MSGSend_t fp_send_msg)
 {
 	E_UWBErrCode			ResCode 		= UWB_Err_Success_0;
@@ -192,6 +196,12 @@ int API_UQ_Ranging_Session_Setup(uint8_t* cmdin, uint16_t cmdinlens, fp_UQ_MSGSe
 	stSource.bIsCanBuffLink = true;
 	return ResCode;
 }
+//********************************************************************************
+
+
+//********************************************************************************
+//
+//********************************************************************************
 extern volatile u8 intIRQFlag;
 int API_UQ_Ranging_Ctrl(E_RangingOPType type, uint8_t* cmdin, uint16_t cmdinlens, fp_UQ_MSGSend_t fp_send_msg)
 {
@@ -227,10 +237,6 @@ int API_UQ_Ranging_Ctrl(E_RangingOPType type, uint8_t* cmdin, uint16_t cmdinlens
 				stSource.u16HistoryNeg = 0;
 				stSource.u16LastDistan = 0xFFFF;
 				stSource.stUCIState.stSession.u32STSIndex = 0;
-#if defined(DEBUG_FEATRUE_FAKE_STS)
-				stSource.stUCIState.u32FakeSTS = 0;
-#endif
-
 			}
 			else
 			{
@@ -297,60 +303,13 @@ int API_UQ_Ranging_Ctrl(E_RangingOPType type, uint8_t* cmdin, uint16_t cmdinlens
 	}
 	return ResCode;
 }
-
-//static int API_UQ_Ranging_NTF_Cache(fp_UQ_MSGSend_t fp_send_msg)
-//{
-//	E_UWBErrCode			ResCode = UWB_Err_Success_0;
-//	uint8_t*				canbuf	= stSource.bufCANOut;
-//
-//	if(Session_Stat_Aciv != stSource.stUCIState.stSession.eSesionStat)
-//	{
-//		return UWB_Err_UCI_Status_Rejected;
-//	}
-//
-//	core_mm_set(stSource.bufCANOut, 0, DEF_UWB_CAN_BUF_SIZE);
-//	ResCode = UQUWBAnchorRangingDataNTF(&stSource);
-//
-//	if (UWB_Err_Success_0 == ResCode)
-//	{
-//
-//		if (5 == stSource.stUCIState.stSession.u16FilterCnt)
-//		{
-//			stSource.stUCIState.stSession.u16FilterCnt = 0;
-//		}
-//		else
-//		{
-//			stSource.bufDistan[stSource.stUCIState.stSession.u16FilterCnt] = stSource.stUCIState.stSession.u16CurrentDistance;
-//			stSource.stUCIState.stSession.u16FilterCnt += 1;
-//		}
-//	}
-//	else
-//	{
-//		//do nothing .
-//	}
-//
-//
-//	//if(0 == (stSource.stUCIState.stSession.u32STSIndex % 5))
-//	if(0 == (stSource.stUCIState.u32FakeSTS % 5))
-//	{
-//		//stSource.stUCIState.stSession.u32STSIndex = stSource.stUCIState.FakeSTS;
-//		ResCode = API_UQ_Ranging_Result(fp_send_msg);
-//	}
-//	else
-//	{
-//		if(0xFFFFFFFF != stSource.stUCIState.u32FakeSTS)
-//		{
-//			stSource.stUCIState.u32FakeSTS ++;
-//		}
-//		else
-//		{
-//			stSource.stUCIState.u32FakeSTS = 0;
-//		}
-//	}
-//	return ResCode;
-//}
+//********************************************************************************
 
 
+
+//********************************************************************************
+//
+//********************************************************************************
 #define AllowedStepWithE (20 + 10)
 #define BasicDeviationLimit (15)
 
@@ -361,7 +320,6 @@ int API_UQ_Ranging_Ctrl(E_RangingOPType type, uint8_t* cmdin, uint16_t cmdinlens
 
 //uint16_t *history_pos;
 //uint16_t *history_neg;
-
 static int invalid_data_kick_out_with_5_data(uint16_t *history_pos, uint16_t *history_neg, uint16_t* bufResult)
 {
 	uint16_t        n                 = 0;
@@ -413,8 +371,12 @@ static int invalid_data_kick_out_with_5_data(uint16_t *history_pos, uint16_t *hi
 	//*history_neg = Nbase_pos;
 	return 0;
 }
+//********************************************************************************
 
 
+//********************************************************************************
+//
+//********************************************************************************
 static int distance_check_and_fixup_with_5_data(uint16_t* last_history_data, uint16_t* indata)
 {
 
@@ -563,9 +525,12 @@ static int distance_check_and_fixup_with_5_data(uint16_t* last_history_data, uin
 
 	return 0;
 }
+//********************************************************************************
 
 
-
+//********************************************************************************
+//
+//********************************************************************************
 void distance_queue_refresh(ST_Ranging_Data* pst_ranging_dat, uint16_t new_data)
 {
 	if(0 == pst_ranging_dat)
@@ -578,40 +543,48 @@ void distance_queue_refresh(ST_Ranging_Data* pst_ranging_dat, uint16_t new_data)
 	pst_ranging_dat->bufDistQueue[4] = new_data;
 
 }
+//********************************************************************************
 
+
+//********************************************************************************
+//
+//********************************************************************************
 static int API_UQ_Ranging_NTF_Cache(fp_UQ_MSGSend_t fp_send_msg)
 {
 	E_UWBErrCode			ResCode = UWB_Err_Success_0;
 	//uint8_t*				canbuf	= stSource.bufCANOut;
 
+	//============================================================================
+	//
+	//============================================================================
 	if(Session_Stat_Aciv != stSource.stUCIState.stSession.eSesionStat)
 	{
 		return UWB_Err_UCI_Status_Rejected;
 	}
 
+	//============================================================================
+	// Set Canbus data
+	//============================================================================
 	core_mm_set(stSource.bufCANOut, 0, DEF_UWB_CAN_BUF_SIZE);
 	ResCode = UQUWBAnchorRangingDataNTF(&stSource);
 
 
+	//============================================================================
+	// Set Canbus data
+	//============================================================================
 	if (UWB_Err_Success_0 == ResCode)
 	{
 
 		if (2 == stSource.stUCIState.stSession.u16FilterCnt)
 		{
 			stSource.stUCIState.stSession.u16FilterCnt = 0;
-
-#if defined(DEBUG_FEATRUE_FAKE_STS)
-			if(stSource.stUCIState.u32FakeSTS < 5)
-			{
-				return ResCode;
-			}
-#else
+			//--------------------------------------------------------------------
+			// [ CAN ID 0x133 ] - there're 5 distance data in a packet
+			//--------------------------------------------------------------------
 			if(stSource.stUCIState.stSession.u32STSIndex < 5)
 			{
 				return ResCode;
 			}
-#endif
-
 			ResCode = API_UQ_Ranging_Result(fp_send_msg);
 			distance_queue_refresh(&stSource.stUCIState.stRaningDat, stSource.stUCIState.stSession.u16CurrentDistance);
 			stSource.stUCIState.stSession.u16FilterCnt = stSource.stUCIState.stSession.u16FilterCnt  + 1UL;
@@ -621,18 +594,6 @@ static int API_UQ_Ranging_NTF_Cache(fp_UQ_MSGSend_t fp_send_msg)
 		{
 			distance_queue_refresh(&stSource.stUCIState.stRaningDat, stSource.stUCIState.stSession.u16CurrentDistance);
 			stSource.stUCIState.stSession.u16FilterCnt = stSource.stUCIState.stSession.u16FilterCnt   + 1UL;
-
-#if defined(DEBUG_FEATRUE_FAKE_STS)
-			if(0xFFFFFFFF != stSource.stUCIState.u32FakeSTS)
-			{
-				stSource.stUCIState.u32FakeSTS ++;
-			}
-			else
-			{
-				stSource.stUCIState.u32FakeSTS = 0;
-			}
-#endif
-
 		}
 	}
 	else
@@ -642,14 +603,19 @@ static int API_UQ_Ranging_NTF_Cache(fp_UQ_MSGSend_t fp_send_msg)
 
 	return ResCode;
 }
+//********************************************************************************
 
+
+//********************************************************************************
+//
+//********************************************************************************
 int API_UQ_Ranging_Result(fp_UQ_MSGSend_t callbackfun)
 {
 	E_UWBErrCode			ResCode 		= UWB_Err_Success_0;
 	uint8_t*				canbuf			= stSource.bufCANOut;
 	uint16_t				sendlens		= 0;
-	uint16_t 				u16tempbuf[5]	= {0};
-	int 					i				= 0;
+//	uint16_t 				u16tempbuf[5]	= {0};
+//	int 					i				= 0;
 
 //	core_mm_copy(u16tempbuf, stSource.stUCIState.stRaningDat.bufDistQueue, 10);
 //
@@ -672,23 +638,32 @@ int API_UQ_Ranging_Result(fp_UQ_MSGSend_t callbackfun)
 //		invalid_data_kick_out_with_5_data(&stSource.u16HistoryPos, &stSource.u16HistoryNeg, stSource.stUCIState.stRaningDat.bufDistQueue);
 //		//distance_check_and_fixup_with_5_data(&stSource.u16LastDistan, stSource.stUCIState.stRaningDat.bufDistQueue);
 //	}
-
+	//============================================================================
+	// Response Code
+	//============================================================================
 	LOG_L_S_HEX(CCC_MD,"Anchor-Distance List : ", stSource.stUCIState.stRaningDat.bufDistQueue, 10);
 	*canbuf = 0x00; canbuf += 1;
-
+	//============================================================================
+	// UWB session ID
+	//============================================================================
 	*canbuf = core_dcm_u16_hi(core_dcm_u32_hi(stSource.stUCIState.stSession.u32CurrSessionID)); canbuf += 1;
 	*canbuf = core_dcm_u16_lo(core_dcm_u32_hi(stSource.stUCIState.stSession.u32CurrSessionID)); canbuf += 1;
 	*canbuf = core_dcm_u16_hi(core_dcm_u32_lo(stSource.stUCIState.stSession.u32CurrSessionID)); canbuf += 1;
 	*canbuf = core_dcm_u16_lo(core_dcm_u32_lo(stSource.stUCIState.stSession.u32CurrSessionID)); canbuf += 1;
-
+	//============================================================================
+	// STS index
+	//============================================================================
 	*canbuf = core_dcm_u16_hi(core_dcm_u32_hi(stSource.stUCIState.stSession.u32STSIndex)); canbuf += 1;
 	*canbuf = core_dcm_u16_lo(core_dcm_u32_hi(stSource.stUCIState.stSession.u32STSIndex)); canbuf += 1;
 	*canbuf = core_dcm_u16_hi(core_dcm_u32_lo(stSource.stUCIState.stSession.u32STSIndex)); canbuf += 1;
 	*canbuf = core_dcm_u16_lo(core_dcm_u32_lo(stSource.stUCIState.stSession.u32STSIndex)); canbuf += 1;
-
-
+	//============================================================================
+	// Anchor index (Vehicle is no.4 in smart access system)
+	//============================================================================
 	*canbuf = stSource.stUCIState.u8UWBLocalcIndex;canbuf += 1;
-
+	//============================================================================
+	// Distance [0]old~[4]new
+	//============================================================================
 	*canbuf = core_dcm_u16_hi(stSource.stUCIState.stRaningDat.bufDistQueue[0]); canbuf += 1;
 	*canbuf = core_dcm_u16_lo(stSource.stUCIState.stRaningDat.bufDistQueue[0]); canbuf += 1;
 
@@ -698,16 +673,20 @@ int API_UQ_Ranging_Result(fp_UQ_MSGSend_t callbackfun)
 	*canbuf = core_dcm_u16_hi(stSource.stUCIState.stRaningDat.bufDistQueue[2]); canbuf += 1;
 	*canbuf = core_dcm_u16_lo(stSource.stUCIState.stRaningDat.bufDistQueue[2]); canbuf += 1;
 
-
 	*canbuf = core_dcm_u16_hi(stSource.stUCIState.stRaningDat.bufDistQueue[3]); canbuf += 1;
 	*canbuf = core_dcm_u16_lo(stSource.stUCIState.stRaningDat.bufDistQueue[3]); canbuf += 1;
 
 	*canbuf = core_dcm_u16_hi(stSource.stUCIState.stRaningDat.bufDistQueue[4]); canbuf += 1;
 	*canbuf = core_dcm_u16_lo(stSource.stUCIState.stRaningDat.bufDistQueue[4]); canbuf += 1;
 
+	//============================================================================
+	// Distance [0]old~[4]new
+	//============================================================================
+	#if defined __FIT_Aeon_H
+
+	#endif
 
 	//debug data
-
 //	*canbuf = core_dcm_u16_hi(u16tempbuf[0]); canbuf += 1;
 //	*canbuf = core_dcm_u16_lo(u16tempbuf[0]); canbuf += 1;
 //
@@ -724,10 +703,11 @@ int API_UQ_Ranging_Result(fp_UQ_MSGSend_t callbackfun)
 //	*canbuf = core_dcm_u16_hi(u16tempbuf[4]); canbuf += 1;
 //	*canbuf = core_dcm_u16_lo(u16tempbuf[4]); canbuf += 1;
 
-
 	//*canbuf = bufDistan[0];canbuf += 1;
 	//*canbuf = bufDistan[1];canbuf += 1;
-
+	//============================================================================
+	//
+	//============================================================================
 	//sendlens = 12;
 	sendlens = 20;
 	//sendlens = 20 + 10;
@@ -735,12 +715,24 @@ int API_UQ_Ranging_Result(fp_UQ_MSGSend_t callbackfun)
 	stSource.stUCIState.stTimerTools.fpOSDelay(50);//need change to  use the os delay
 	return ResCode;
 }
+//********************************************************************************
+
+
+//********************************************************************************
+//
+//********************************************************************************
 int API_UQ_CustCMD(ST_CustCmd* pstCustCmd, fp_UQ_MSGSend_t callbackfun)
 {
 	E_UWBErrCode			ResCode 		= UWB_Err_Success_0;
 	ResCode = UQUWBCustCMD(pstCustCmd);
 	return ResCode;
 }
+//********************************************************************************
+
+
+//********************************************************************************
+//
+//********************************************************************************
 int API_UQ_Get_Caps(ST_UWBProtocol* pst_ptl, fp_UQ_MSGSend_t callbackfun)
 {
 	//pst_ptl->stCCCCaps.
@@ -749,13 +741,24 @@ int API_UQ_Get_Caps(ST_UWBProtocol* pst_ptl, fp_UQ_MSGSend_t callbackfun)
 
 	return UWB_Err_Success_0;
 }
+//********************************************************************************
+
+
+//********************************************************************************
+//
+//********************************************************************************
 int API_UQ_Set_Caps(ST_UWBProtocol* pst_ptl, fp_UQ_MSGSend_t callbackfun)
 {
 	//UWBErrCode			ResCode 		= UWB_Err_Success_0;
 	//return ResCode;
 	return UWB_Err_Success_0;
 }
+//********************************************************************************
 
+
+//********************************************************************************
+//
+//********************************************************************************
 int API_UQ_Time_Sync(uint8_t* cmd, uint16_t cmdlens, fp_UQ_MSGSend_t callbackfun)
 {
 	E_UWBErrCode			ResCode 		= UWB_Err_Success_0;
@@ -768,6 +771,8 @@ int API_UQ_Time_Sync(uint8_t* cmd, uint16_t cmdlens, fp_UQ_MSGSend_t callbackfun
 
 	return ResCode;
 }
+//********************************************************************************
+
 #elif defined(UWB_INITIATOR)
 
 int API_UQ_Device_Init(fp_UQ_MSGSend_t fp_send_msg)
@@ -966,7 +971,9 @@ void API_UQ_Set_NTF_Cache_Flag(ST_UWBSource* pst_uwb_source)
 	pst_uwb_source->stUCIState.bIsNTFCache = true;
 }
 
-
+//********************************************************************************
+//
+//********************************************************************************
 #ifdef _DEBUG
 int DEBUG_MSG_SEND(E_UWBControlMessageIndex msgtype, uint8_t* pcmd, uint16_t* pcmdlens)
 {
@@ -974,104 +981,49 @@ int DEBUG_MSG_SEND(E_UWBControlMessageIndex msgtype, uint8_t* pcmd, uint16_t* pc
 	core_mm_set(tmpBuf,0x00u,65u);
 	if (msgtype == UWB_Ranging_Result_Notice)
 	{
+		//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+		#if defined __FIT_Aeon_H
+
+
+		#endif
 		core_mm_copy(tmpBuf,pcmd,*pcmdlens);
 		BCanPdu_Set_BLE133_Data(tmpBuf,64U);
 		return 0U;
 	}
-	
-#if defined(UWB_Responder)
-	u8 tmpBuf[65];
-	core_mm_set(tmpBuf,0x00,65);
 
-	switch (msgtype)
-	{
-	case UWB_Anchor_WakeUp_RS:
-		tmpBuf[0] = CAN_PKG_ID_UWB_ANCHOR_WAKEUP_RS;
-		break;
-	case UWB_Timer_Sync_RS:
-		tmpBuf[0] = CAN_PKG_ID_TIME_SYNC_RS;
-		break;
-	case UWB_Ranging_Session_Start_RS:
-		tmpBuf[0] = CAN_PKG_ID_UWB_RANGING_SESSION_START_RS;
-		break;
-	case UWB_Ranging_Result_Notice:
-		tmpBuf[0] = CAN_PKG_ID_UWB_RANGING_RESULT_NOTICE;
-		break;
-	default:
-		break;
-	}
-	core_mm_copy(tmpBuf+1,pcmd,*pcmdlens);
-	ble_ccc_send_evt(CCC_EVT_RECV_UWB_DATA,0U,tmpBuf,65U);
-#endif
 	return 0;
 }
+#endif
+//********************************************************************************
 
+
+//********************************************************************************
+//
+//********************************************************************************
+#ifdef _DEBUG
 int DEBUG_CONFIG_W(uint8_t CfgIdx, uint8_t* pBuf, const uint16_t BufLens)
 {
 	return 0;
 }
+#endif
+//********************************************************************************
 
+
+//********************************************************************************
+//
+//********************************************************************************
+#ifdef _DEBUG
 int DEBUG_CONFIG_R(uint8_t CfgIdx, uint8_t* pBuf, uint16_t* pMaxBufLens)
 {
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #endif
+//********************************************************************************
 
 
+//********************************************************************************
+//
+//********************************************************************************
 int UQ_UWB_SDK_Interface_init(ST_UWBSDKInterface* pstSDK)
 {
 	E_UWBErrCode	ResCode 		= UWB_Err_Success_0;
@@ -1095,82 +1047,7 @@ int UQ_UWB_SDK_Interface_init(ST_UWBSDKInterface* pstSDK)
 
 	return ResCode;
 }
+//********************************************************************************
 
 
-
-#if 0 
-abandoned code
-
-#if defined(UWB_INITIATOR)
-
-#elif defined(UWB_RESPONDER)
-int API_UQ_Device_Init(void)
-{
-	UWBErrCode			ResCode 		= UWB_Err_Success_0;
-
-	return ResCode;
-
-}
-int API_UQ_Device_Reset(void)
-{
-	UWBErrCode			ResCode 		= UWB_Err_Success_0;
-
-	return ResCode;
-
-}
-int API_UQ_Get_Caps(st_uwb_protocol* pst_ptl)
-{
-	UWBErrCode			ResCode 		= UWB_Err_Success_0;
-
-	return ResCode;
-
-}
-int API_UQ_Set_Caps(st_uwb_protocol* pst_ptl)
-{
-	UWBErrCode			ResCode 		= UWB_Err_Success_0;
-
-	return ResCode;
-
-}
-int API_UQ_Anchor_Wakup(uint8_t* cmd, uint16_t cmdlens)
-{
-	UWBErrCode			ResCode 		= UWB_Err_Success_0;
-
-	return ResCode;
-
-}
-int API_UQ_Time_Sync(uint8_t* cmd, uint16_t cmdlens)
-{
-	UWBErrCode			ResCode 		= UWB_Err_Success_0;
-
-	return ResCode;
-
-}
-int API_UQ_RangingSessionSetup(uint8_t* cmd, uint16_t cmdlens)
-{
-	UWBErrCode			ResCode 		= UWB_Err_Success_0;
-
-	return ResCode;
-
-}
-int API_UQ_RangingCtrl(uint8_t* cmd, uint16_t cmdlens)
-{
-	UWBErrCode			ResCode 		= UWB_Err_Success_0;
-
-	return ResCode;
-
-}
-
-int API_UQ_CustCMD(st_custcmd* pstCustCmd)
-{
-	UWBErrCode			ResCode 		= UWB_Err_Success_0;
-
-	return ResCode;
-
-}
-#else
-?
-#endif
-
-#endif
 

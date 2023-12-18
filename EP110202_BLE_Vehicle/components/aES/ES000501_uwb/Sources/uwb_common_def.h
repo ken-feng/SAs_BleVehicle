@@ -471,9 +471,6 @@ typedef struct struct_UCI_Frame_State_t
 	ST_Ranging_Data					stRaningDat;
 	uint8_t							u8RSTCnt;
 	uint8_t							u8NXPDeviceInfo[64];
-#ifdef DEBUG_FEATRUE_FAKE_STS
-	uint32_t						FakeSTS;
-#endif
 }ST_UCIFrameState;
 
 

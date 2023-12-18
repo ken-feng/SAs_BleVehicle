@@ -136,21 +136,24 @@ static bool_t Wakeup_CheckIRQ(uint32_t idx)
 volatile u8 uwbIntCnt = 0;
 
 extern volatile u8 intIRQFlag = 0U;
+
 /*中断处理例程*/
+//**************************************************************************
+// UWB Interrupt
+//**************************************************************************
 void INT_UWB_IRQ_ISR(void)
 {
 	GpioClearPinIntFlag(&intUwbIRQPin);
 
-//	TP_PB1_Toggle();
-	// uwbIntCnt++;
-	// if(uwbIntCnt == 2)
-	// {
-	// 	uwbIntCnt = 0;
-	//	ble_ccc_send_evt(UWB_EVT_INT_NOTICE,0U,NULL,0U);
-	// }
 #ifndef FIT_DEBUG_NO_UWB 
+	//======================================================================
+	// Check function enable/disable
+	//======================================================================
 	if(stSource.stUCIState.stUWBCommu.fpCmmuIsTransmitComplate != NULL)
 	{
+		//------------------------------------------------------------------
+		// Transmit Complete SPI_CS
+		//------------------------------------------------------------------
 		if (stSource.stUCIState.stUWBCommu.fpCmmuIsTransmitComplate())
 		{
 			if(intIRQFlag == 0U)
@@ -159,6 +162,9 @@ void INT_UWB_IRQ_ISR(void)
 				ble_ccc_send_evt(UWB_EVT_INT_NOTICE,0U,NULL,0U);
 			}
 		}
+		//------------------------------------------------------------------
+		// Notification State
+		//------------------------------------------------------------------
 		else
 		{
 			stUWBSDK.fpUQSetNTFCacheFlag(&stSource);
@@ -285,8 +291,17 @@ void KW38_GPIO_Config (void)
 
 	PORT_SetPinMux(PORTB, 1u, kPORT_MuxAsGpio);
     GPIO_PinInit(GPIOB, 1u, &(gpio_pin_config_t){kGPIO_DigitalOutput, 0U});
+
+    //Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+#if defined __FIT_Aeon_H
 	PORT_SetPinMux(PORTB, 2u, kPORT_MuxAsGpio);
     GPIO_PinInit(GPIOB, 2u, &(gpio_pin_config_t){kGPIO_DigitalOutput, 0U});
+	PORT_SetPinMux(PORTB, 3u, kPORT_MuxAsGpio);
+    GPIO_PinInit(GPIOB, 3u, &(gpio_pin_config_t){kGPIO_DigitalOutput, 0U});
+#else
+	PORT_SetPinMux(PORTB, 2u, kPORT_MuxAsGpio);
+    GPIO_PinInit(GPIOB, 2u, &(gpio_pin_config_t){kGPIO_DigitalOutput, 0U});
+#endif
     //PC2, gpio输出高，			(CAN_STB) //0：normal  1:standby
     //PC3, CAN0_TX(功能9)，		(CAN_TX)
     //PC4, CAN0_RX(功能9), 		(CAN_RX)

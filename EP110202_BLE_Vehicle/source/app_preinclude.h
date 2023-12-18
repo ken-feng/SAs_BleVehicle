@@ -39,6 +39,9 @@
 
 #define PTB0_IRQ_PIN		1/*	1: PTB0   0: PTC16*/
 
+//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+#define	__FIT_Aeon_H
+
 
 //#define CAN_DEBUG_MODE
 

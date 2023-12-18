@@ -28,13 +28,20 @@ E_UWBErrCode API_UWB_Responder_Init(ST_UWBSource* pst_uwb_source)
 	API_UCI_Frame_Init(&pst_uwb_source->stUCIState);			//st_uci_state.IsInCmd = true;
 	return ResCode;
 }
+
+
+//********************************************************************************
+//
+//********************************************************************************
 E_UWBErrCode API_UWB_Responder_WorkProcedure(ST_UWBSource* pst_uwb_source)
 {
 	E_UWBErrCode		ResCode 		= UWB_Err_Success_0;
 	uint16_t			sendlens 		= 0;
 
 	int seq_cnt = 0;
+	//============================================================================
 	//step 4. PreProcessing
+	//============================================================================
 	if(true == pst_uwb_source->stUCIState.bIsInCmd)
 	{
 //		switch(pst_uwb_source->stUCIState.eMSGIdx)
@@ -51,9 +58,11 @@ E_UWBErrCode API_UWB_Responder_WorkProcedure(ST_UWBSource* pst_uwb_source)
 //			default:
 //                	break;
 //		}
-
+		//=========================================================================
 		//step 5. Call the uci frame main function go in to the UWB control entry
-		while(pst_uwb_source->stUCIState.bIsInCmd)//when the work flow is INComing , mean the 29d5 transcve isn't done . add by JonSong
+		//when the work flow is INComing , mean the 29d5 transcve isn't done . add by JonSong
+		//=========================================================================
+		while(pst_uwb_source->stUCIState.bIsInCmd)
 		{
 			ResCode = API_UCI_Frame_Entry(&pst_uwb_source->stUCIState);
 
@@ -90,7 +99,9 @@ E_UWBErrCode API_UWB_Responder_WorkProcedure(ST_UWBSource* pst_uwb_source)
 		}
 	}
 
+	//============================================================================
 	//step 6. PostProcessing
+	//============================================================================
 	if((false == pst_uwb_source->stUCIState.bIsInCmd) && (UWB_MSG_Is_Null != pst_uwb_source->stUCIState.eMSGIdx))
 	{
 		switch(pst_uwb_source->stUCIState.eMSGIdx)
@@ -169,7 +180,9 @@ E_UWBErrCode API_UWB_Responder_WorkProcedure(ST_UWBSource* pst_uwb_source)
 		}
 		pst_uwb_source->stUCIState.bIsInCmd = true;
 	}
+	//============================================================================
 	//step 7. Send CAN or Uart msg to BUS .
+	//============================================================================
 
 	return ResCode;
 }

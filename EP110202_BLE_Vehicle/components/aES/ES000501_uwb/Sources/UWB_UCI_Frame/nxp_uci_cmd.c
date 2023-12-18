@@ -64,6 +64,9 @@ E_UWBErrCode API_UCI_Frame_Init(ST_UCIFrameState* pst_frame_state)
 }
 
 
+//********************************************************************************
+//
+//********************************************************************************
 E_UWBErrCode API_UCI_Frame_Entry(ST_UCIFrameState* pst_frame_state)
 {
 	E_UWBErrCode ResCode = UWB_Err_Success_0;
@@ -72,248 +75,283 @@ E_UWBErrCode API_UCI_Frame_Entry(ST_UCIFrameState* pst_frame_state)
 	static uint8_t MsgIdx_loc = 0x00;
 	switch(pst_frame_state->eState)
 	{
+		//======================================================================
+		//
+		//======================================================================
 		case UciFrameState_Init:
-														ResCode = pst_frame_state->stUWBCommu.fpCmmuInit();
-														if (UWB_Err_Success_0 == ResCode)
-														{
-															pst_frame_state->eState = UciFrameState_Connecting;
-														}
-														else
-														{
-															pst_frame_state->eState = UciFrameState_NotifyPending;
-														}
-														break;
+		{
+			ResCode = pst_frame_state->stUWBCommu.fpCmmuInit();
+			if (UWB_Err_Success_0 == ResCode)
+			{
+				pst_frame_state->eState = UciFrameState_Connecting;
+			}
+			else
+			{
+				pst_frame_state->eState = UciFrameState_NotifyPending;
+			}
+		} break;
+		//======================================================================
+		//
+		//======================================================================
 		case UciFrameState_Connecting:
-														ResCode = pst_frame_state->stUWBCommu.fpCmmuReset(
-															&pst_frame_state->stTimerTools, pst_frame_state->stUCIRecv.pbufDatHeader, &pst_frame_state->stUCIRecv.u16DatBodyLens);
-														if(UWB_Err_Success_0 == ResCode)
-														{
-															nxp_uci_res_parse(&pst_frame_state->stUCIRecv, pst_frame_state);
-															switch(pst_frame_state->eOpCode)
-															{
-																case UWB_Err_UCI_Device_Status_NTF_RangingSession_Is_Ready:
-																case UWB_Err_UCI_Device_Status_NTF_Device_Is_Test_Mode:
-																case UWB_Err_UCI_Device_Status_NTF_Reboot_By_SoftWare:
-																case UWB_Err_UCI_Device_Status_NTF_Reboot_From_HPD:
-																case UWB_Err_UCI_Device_Status_NTF_Reboot_From_RST_Pin:
-																case UWB_Err_UCI_Device_Status_NTF_Reboot_Power_Fault:
-																	pst_frame_state->eState				= UciFrameState_Connected;
-																	pst_frame_state->eNTFIdx			= UBW_Deviec_Status_NTF;
-																	pst_frame_state->eMSGIdx			= UWB_MSG_Is_Null;
-																	pst_frame_state->bIsInCmd			= false;
-																	pst_frame_state->bIsUWBConnected	= true;
-																	
-																	//LOG_L_S(CCC_MD,"UWB Module is On-line .");
-																	break;
-																default:
-																	pst_frame_state->eState = UciFrameState_NotConnected;
-																	//LOG_L_S(CCC_MD,"UWB Module Reset Failed . UWB Module is Off-line .");
-																break;
-															}
-														}
-														else
-														{
-															pst_frame_state->eState = UciFrameState_NotConnected;
-														}
-														break;
+		{
+			ResCode = pst_frame_state->stUWBCommu.fpCmmuReset(
+				&pst_frame_state->stTimerTools, pst_frame_state->stUCIRecv.pbufDatHeader, &pst_frame_state->stUCIRecv.u16DatBodyLens);
+			if(UWB_Err_Success_0 == ResCode)
+			{
+				nxp_uci_res_parse(&pst_frame_state->stUCIRecv, pst_frame_state);
+				switch(pst_frame_state->eOpCode)
+				{
+					case UWB_Err_UCI_Device_Status_NTF_RangingSession_Is_Ready:
+					case UWB_Err_UCI_Device_Status_NTF_Device_Is_Test_Mode:
+					case UWB_Err_UCI_Device_Status_NTF_Reboot_By_SoftWare:
+					case UWB_Err_UCI_Device_Status_NTF_Reboot_From_HPD:
+					case UWB_Err_UCI_Device_Status_NTF_Reboot_From_RST_Pin:
+					case UWB_Err_UCI_Device_Status_NTF_Reboot_Power_Fault:
+						pst_frame_state->eState				= UciFrameState_Connected;
+						pst_frame_state->eNTFIdx			= UBW_Deviec_Status_NTF;
+						pst_frame_state->eMSGIdx			= UWB_MSG_Is_Null;
+						pst_frame_state->bIsInCmd			= false;
+						pst_frame_state->bIsUWBConnected	= true;
+
+						//LOG_L_S(CCC_MD,"UWB Module is On-line .");
+						break;
+					default:
+						pst_frame_state->eState = UciFrameState_NotConnected;
+						//LOG_L_S(CCC_MD,"UWB Module Reset Failed . UWB Module is Off-line .");
+					break;
+				}
+			}
+			else
+			{
+				pst_frame_state->eState = UciFrameState_NotConnected;
+			}
+		} break;
+		//======================================================================
+		//
+		//======================================================================
 		case UciFrameState_Connected:
-														if(pst_frame_state->bIsInCmd)
-														{
-															if(pst_frame_state->stUWBCommu.fpCmmuIsntfcomin())
-															{
-																pst_frame_state->eState = UciFrameState_ReceiveNotify;
-																ResCode = UWB_Err_COMMU_Send_Cancel;
-																if((UWB_Ranging_Result_Notice!=pst_frame_state->eMSGIdx) && 
-																(UWB_MSG_Is_Null!=pst_frame_state->eMSGIdx))
-																{
-																	saveFlag = 0x01;
-																	bIsInCmd_loc = pst_frame_state->bIsInCmd;
-																	MsgIdx_loc = pst_frame_state->eMSGIdx;
-																}
-															}
-															else
-															{
-																pst_frame_state->eState = UciFrameState_TransmitCommand;
-															}
-														}
-														else
-														{
-															// never in to thie here .
-														}
-														break;
+		{
+			if(pst_frame_state->bIsInCmd)
+			{
+				if(pst_frame_state->stUWBCommu.fpCmmuIsntfcomin())
+				{
+					pst_frame_state->eState = UciFrameState_ReceiveNotify;
+					ResCode = UWB_Err_COMMU_Send_Cancel;
+					if((UWB_Ranging_Result_Notice!=pst_frame_state->eMSGIdx) &&
+					(UWB_MSG_Is_Null!=pst_frame_state->eMSGIdx))
+					{
+						saveFlag = 0x01;
+						bIsInCmd_loc = pst_frame_state->bIsInCmd;
+						MsgIdx_loc = pst_frame_state->eMSGIdx;
+					}
+				}
+				else
+				{
+					pst_frame_state->eState = UciFrameState_TransmitCommand;
+				}
+			}
+			else
+			{
+				// never in to thie here .
+			}
+		} break;
+		//======================================================================
+		//
+		//======================================================================
 		case UciFrameState_NotConnected:
-														pst_frame_state->bIsUWBConnected = false;
-														//Only the HardRest command can be accept
-														API_UWB_Commu_Module_Deinit(&pst_frame_state->stUWBCommu);
-														API_UWB_Timer_Tools_Deinit(&pst_frame_state->stTimerTools);
-														pst_frame_state->eState = UciFrameState_NotifyPending;
-														break;
-
+		{
+			pst_frame_state->bIsUWBConnected = false;
+			//Only the HardRest command can be accept
+			API_UWB_Commu_Module_Deinit(&pst_frame_state->stUWBCommu);
+			API_UWB_Timer_Tools_Deinit(&pst_frame_state->stTimerTools);
+			pst_frame_state->eState = UciFrameState_NotifyPending;
+		} break;
+		//======================================================================
+		//
+		//======================================================================
 		case UciFrameState_TransmitCommand:
-														if((pst_frame_state->bIsInCmd)&&(UWB_MSG_Is_Null != pst_frame_state->eMSGIdx))
-														{
-															nxp_uci_cmd_parse(&pst_frame_state->stUCISend, pst_frame_state);
-															if(UWB_Err_Success_0 != pst_frame_state->eOpCode)
-															{
-																pst_frame_state->eNTFIdx = UWB_MSG_Is_Null;
-																pst_frame_state->eState = UciFrameState_Connected;
-															}
-															else
-															{
-																ResCode = pst_frame_state->stUWBCommu.fpCmmuSend(
-																		&pst_frame_state->stTimerTools, pst_frame_state->stUCISend.pbufDatHeader, pst_frame_state->stUCISend.u16DatBodyLens);
-																if(UWB_Err_Success_0 == ResCode)
-																{
-																	pst_frame_state->eMSGIdx = UWB_MSG_Is_Null;
-																	pst_frame_state->eState = UciFrameState_ReceiveResponse;
-																	pst_frame_state->stUCISend.u16DatBodyLens = 0;
+		{
+			if((pst_frame_state->bIsInCmd)&&(UWB_MSG_Is_Null != pst_frame_state->eMSGIdx))
+			{
+				nxp_uci_cmd_parse(&pst_frame_state->stUCISend, pst_frame_state);
+				if(UWB_Err_Success_0 != pst_frame_state->eOpCode)
+				{
+					pst_frame_state->eNTFIdx = UWB_MSG_Is_Null;
+					pst_frame_state->eState = UciFrameState_Connected;
+				}
+				else
+				{
+					ResCode = pst_frame_state->stUWBCommu.fpCmmuSend(
+							&pst_frame_state->stTimerTools, pst_frame_state->stUCISend.pbufDatHeader, pst_frame_state->stUCISend.u16DatBodyLens);
+					if(UWB_Err_Success_0 == ResCode)
+					{
+						pst_frame_state->eMSGIdx = UWB_MSG_Is_Null;
+						pst_frame_state->eState = UciFrameState_ReceiveResponse;
+						pst_frame_state->stUCISend.u16DatBodyLens = 0;
 
-																}
-																else if(UWB_Err_COMMU_Send_Cancel == ResCode)
-																{
-																	pst_frame_state->eState = UciFrameState_ReceiveNotify;
-																}
-																else
-																{
-																	pst_frame_state->eState = UciFrameState_NotifyPending;
-																}
-															}
-														}
-														else
-														{
-															pst_frame_state->eState = UciFrameState_Connected;//goto check if 29d5 msg are coming .
-														}
-														break;
+					}
+					else if(UWB_Err_COMMU_Send_Cancel == ResCode)
+					{
+						pst_frame_state->eState = UciFrameState_ReceiveNotify;
+					}
+					else
+					{
+						pst_frame_state->eState = UciFrameState_NotifyPending;
+					}
+				}
+			}
+			else
+			{
+				pst_frame_state->eState = UciFrameState_Connected;//goto check if 29d5 msg are coming .
+			}
+		} break;
+		//======================================================================
+		//
+		//======================================================================
 		case UciFrameState_ReceiveResponse:
-														if(pst_frame_state->bIsInCmd)
-														{
-															ResCode = pst_frame_state->stUWBCommu.fpCmmuRecv(
-																&pst_frame_state->stTimerTools, pst_frame_state->stUCIRecv.pbufDatHeader, &pst_frame_state->stUCIRecv.u16DatBodyLens);
-															if(UWB_Err_Success_0 == ResCode)
-															{
-																nxp_uci_res_parse(&pst_frame_state->stUCIRecv, pst_frame_state);
+		{
+			if(pst_frame_state->bIsInCmd)
+			{
+				ResCode = pst_frame_state->stUWBCommu.fpCmmuRecv(
+					&pst_frame_state->stTimerTools, pst_frame_state->stUCIRecv.pbufDatHeader, &pst_frame_state->stUCIRecv.u16DatBodyLens);
+				if(UWB_Err_Success_0 == ResCode)
+				{
+					nxp_uci_res_parse(&pst_frame_state->stUCIRecv, pst_frame_state);
 
-																if(UWB_MSG_Is_Null != pst_frame_state->eMSGIdx)
-																{
-																	//pst_frame_state->stTimerTools.fpOSDelay(1);
-																	pst_frame_state->stTimerTools.fpDelay(NS_PERIOD_BY_MS(1));
-																	if(false == pst_frame_state->stUWBCommu.fpCmmuIsntfcomin())
-																	{
-																		pst_frame_state->bIsInCmd = false;
-																		pst_frame_state->eState = UciFrameState_Connected;
-																	}
-																	else
-																	{
-																		pst_frame_state->bIsInCmd = true;
-																		pst_frame_state->eState = UciFrameState_ReceiveNotify;
-																		ResCode = UWB_Err_COMMU_Send_Cancel;
-																	}
-																}else
-																{
-																	pst_frame_state->bIsInCmd = false;//added by niull
-																	pst_frame_state->eState = UciFrameState_Connected;
-																	ResCode = UWB_Err_COMMU_Recv_Data_Body_Failed;
-																}
-															}
-															else
-															{
-																pst_frame_state->bIsInCmd = false;
-																pst_frame_state->eState = UciFrameState_Connected;//added by niull
-																//pst_frame_state->eState = UciFrameState_NotifyPending;
-															}
-														}
-														else
-														{
-															//do nothing .
-														}
-														break;
+					if(UWB_MSG_Is_Null != pst_frame_state->eMSGIdx)
+					{
+						//pst_frame_state->stTimerTools.fpOSDelay(1);
+						pst_frame_state->stTimerTools.fpDelay(NS_PERIOD_BY_MS(1));
+						if(false == pst_frame_state->stUWBCommu.fpCmmuIsntfcomin())
+						{
+							pst_frame_state->bIsInCmd = false;
+							pst_frame_state->eState = UciFrameState_Connected;
+						}
+						else
+						{
+							pst_frame_state->bIsInCmd = true;
+							pst_frame_state->eState = UciFrameState_ReceiveNotify;
+							ResCode = UWB_Err_COMMU_Send_Cancel;
+						}
+					}else
+					{
+						pst_frame_state->bIsInCmd = false;//added by niull
+						pst_frame_state->eState = UciFrameState_Connected;
+						ResCode = UWB_Err_COMMU_Recv_Data_Body_Failed;
+					}
+				}
+				else
+				{
+					pst_frame_state->bIsInCmd = false;
+					pst_frame_state->eState = UciFrameState_Connected;//added by niull
+					//pst_frame_state->eState = UciFrameState_NotifyPending;
+				}
+			}
+			else
+			{
+				//do nothing .
+			}
+		} break;
+		//======================================================================
+		//
+		//======================================================================
 		case UciFrameState_ReceiveNotify:
-														if(pst_frame_state->bIsInCmd)
-														{
-															ResCode = pst_frame_state->stUWBCommu.fpCmmuRecv(
-																&pst_frame_state->stTimerTools, pst_frame_state->stUCIRecv.pbufDatHeader, &pst_frame_state->stUCIRecv.u16DatBodyLens);
-															if(UWB_Err_Success_0 == ResCode)
-															{
-																nxp_uci_res_parse(&pst_frame_state->stUCIRecv, pst_frame_state);
-																//pst_frame_state->stTimerTools.fpOSDelay(1);//need change to  use the os delay
-																pst_frame_state->stTimerTools.fpDelay(NS_PERIOD_BY_MS(1));
-																if(false == pst_frame_state->stUWBCommu.fpCmmuIsntfcomin())
-																{
-																	pst_frame_state->bIsInCmd = false;
-																	pst_frame_state->eState = UciFrameState_Connected;
-																	if(saveFlag == 0x01)//added by niull
-																	{
-																		pst_frame_state->bIsInCmd = bIsInCmd_loc;
-																		pst_frame_state->eMSGIdx = MsgIdx_loc;
-																		saveFlag = 0x00;
-																		bIsInCmd_loc = 0x00;
-																		MsgIdx_loc = 0x00;
-																		ResCode = UWB_Err_COMMU_Send_Cancel;
-																	}
-																}
-																else
-																{
-																	pst_frame_state->bIsInCmd = true;
-																	pst_frame_state->eState = UciFrameState_ReceiveNotify;
-																	ResCode = UWB_Err_COMMU_Send_Cancel;
-																}
-															}
-															else
-															{
-																pst_frame_state->eState = UciFrameState_NotifyPending;
-															}
-														}
-														else
-														{
-															//do nothing .
-														}
-														break;
+		{
+			if(pst_frame_state->bIsInCmd)
+			{
+				ResCode = pst_frame_state->stUWBCommu.fpCmmuRecv(
+					&pst_frame_state->stTimerTools, pst_frame_state->stUCIRecv.pbufDatHeader, &pst_frame_state->stUCIRecv.u16DatBodyLens);
+				if(UWB_Err_Success_0 == ResCode)
+				{
+					nxp_uci_res_parse(&pst_frame_state->stUCIRecv, pst_frame_state);
+					//pst_frame_state->stTimerTools.fpOSDelay(1);//need change to  use the os delay
+					pst_frame_state->stTimerTools.fpDelay(NS_PERIOD_BY_MS(1));
+					if(false == pst_frame_state->stUWBCommu.fpCmmuIsntfcomin())
+					{
+						pst_frame_state->bIsInCmd = false;
+						pst_frame_state->eState = UciFrameState_Connected;
+						if(saveFlag == 0x01)//added by niull
+						{
+							pst_frame_state->bIsInCmd = bIsInCmd_loc;
+							pst_frame_state->eMSGIdx = MsgIdx_loc;
+							saveFlag = 0x00;
+							bIsInCmd_loc = 0x00;
+							MsgIdx_loc = 0x00;
+							ResCode = UWB_Err_COMMU_Send_Cancel;
+						}
+					}
+					else
+					{
+						pst_frame_state->bIsInCmd = true;
+						pst_frame_state->eState = UciFrameState_ReceiveNotify;
+						ResCode = UWB_Err_COMMU_Send_Cancel;
+					}
+				}
+				else
+				{
+					pst_frame_state->eState = UciFrameState_NotifyPending;
+				}
+			}
+			else
+			{
+				//do nothing .
+			}
+		} break;
+		//======================================================================
+		//
+		//======================================================================
 		case UciFrameState_NotifyPending:
-														if(pst_frame_state->bIsUWBConnected)
-														{
-															pst_frame_state->eState = UciFrameState_Connected;
-//															if((UWB_MSG_Is_Null != pstate->MSGIdx) &&
-//															   (UWB_Sys_Notice_NTF != pstate->NTFIdx))
-//															{
-//																pst_frame_state->eState = UciFrameState_Connected;
-//																pstate->IsInCmd = false;
-//																pstate->MSGIdx = pstate->MSGIdx+1;//from RQ goto RS
-//																break;
-//															}
-//															else
-//															{
-//																pst_frame_state->eState = UciFrameState_Connected;
-//																//pstate->IsInCmd = false; do not going to next round . keep state at current command while for .
-//																pstate->NTFIdx = UWB_Sys_Notice_NTF;//Unknown err
-//															}
-														}
-														else
-														{//keep the Hardrest continue .
-															if(5 >= pst_frame_state->u8RSTCnt)
-															{
-																API_UCI_Frame_Init(pst_frame_state);
-																pst_frame_state->eState = UciFrameState_Init;
-																pst_frame_state->bIsInCmd = true;
-																pst_frame_state->u8RSTCnt = pst_frame_state->u8RSTCnt + 1UL;
-															}
-															else
-															{
-																pst_frame_state->bIsInCmd = false;
-															}
+		{
+			if(pst_frame_state->bIsUWBConnected)
+			{
+				pst_frame_state->eState = UciFrameState_Connected;
+//				if((UWB_MSG_Is_Null != pstate->MSGIdx) &&
+//				   (UWB_Sys_Notice_NTF != pstate->NTFIdx))
+//				{
+//					pst_frame_state->eState = UciFrameState_Connected;
+//					pstate->IsInCmd = false;
+//					pstate->MSGIdx = pstate->MSGIdx+1;//from RQ goto RS
+//					break;
+//				}
+//				else
+//				{
+//					pst_frame_state->eState = UciFrameState_Connected;
+//					//pstate->IsInCmd = false; do not going to next round . keep state at current command while for .
+//					pstate->NTFIdx = UWB_Sys_Notice_NTF;//Unknown err
+//				}
+			}
+			else
+			{//keep the Hardrest continue .
+				if(5 >= pst_frame_state->u8RSTCnt)
+				{
+					API_UCI_Frame_Init(pst_frame_state);
+					pst_frame_state->eState = UciFrameState_Init;
+					pst_frame_state->bIsInCmd = true;
+					pst_frame_state->u8RSTCnt = pst_frame_state->u8RSTCnt + 1UL;
+				}
+				else
+				{
+					pst_frame_state->bIsInCmd = false;
+				}
 
-														}
-														break;
-
+			}
+		} break;
+		//======================================================================
+		//
+		//======================================================================
 		case UciFrameState_Error:
 		default:
-														ResCode = UWB_Err_UnKnowErr;
-														pst_frame_state->bIsInCmd = false;
-														pst_frame_state->eNTFIdx = UWB_Sys_Notice_NTF;
-														break;
+		{
+			ResCode = UWB_Err_UnKnowErr;
+			pst_frame_state->bIsInCmd = false;
+			pst_frame_state->eNTFIdx = UWB_Sys_Notice_NTF;
+		} break;
 	}
 
 	return ResCode;
 }
+//********************************************************************************
 
 
 /*
