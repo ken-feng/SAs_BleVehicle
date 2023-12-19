@@ -80,7 +80,10 @@ static void BCanPdu_RxHandler_SA_0x2A1(CanPduRxStatus_t status);
 
 static void BCanPdu_RxHandler_ODB_0x58(CanPduRxStatus_t status);
 static void BCanPdu_RxHandler_ODB_0x59(CanPduRxStatus_t status);
-
+//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+#if defined __FIT_Aeon_H
+static void BCanPdu_RxHandler_ODB_0x60(CanPduRxStatus_t status);
+#endif
 
 #ifdef FIT_DEBUG_NO_SA 
 static void BCanPdu_RxHandler_UWB_0x313(CanPduRxStatus_t status);
@@ -146,6 +149,10 @@ BCanPdu_SA_0x2A1_t g_BCanPdu_SA_0x2A1 = {{0x00}};
 
 BCanPdu_ODB_0x58_t g_BCanPdu_ODB_0x58 = {{0x00}};  
 BCanPdu_ODB_0x59_t g_BCanPdu_ODB_0x59 = {{0x00}};  
+//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+#if defined __FIT_Aeon_H
+BCanPdu_ODB_0x59_t g_BCanPdu_ODB_0x60 = {{0x00}};
+#endif
 
 #ifdef FIT_DEBUG_NO_SA 
 BCanPdu_UWB_0x313_t g_BCanPdu_UWB_0x313 = {{0x00}};  
@@ -427,6 +434,15 @@ CanRxPduHandle_t g_BCanRxPduList[BCANPDU_N_RX] =
 	    BCanPdu_RxHandler_SA_0x2A1,   NULL_PTR
     },
 
+	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+	#if defined __FIT_Aeon_H
+    { /* 29 */
+        CAN_EVENT_MSG, 0x60, g_BCanPdu_ODB_0x60.Data,
+	    64, TRUE, FALSE, 20,  0, FALSE,
+	    1, 0, CANPDU_RX_LOST_STATUS,
+	    BCanPdu_RxHandler_ODB_0x60,   NULL_PTR
+    },
+	#endif
 #ifdef FIT_DEBUG_NO_SA    
     { /* 27 */
         CAN_EVENT_MSG, 0x313, g_BCanPdu_UWB_0x313.Data,  
@@ -465,6 +481,7 @@ CanRxPduHandle_t g_BCanRxPduList[BCANPDU_N_RX] =
 	    BCanPdu_RxHandler_UWB_0x363,   NULL_PTR
     },         
 #endif  
+
 };
 /*!
  * \}
@@ -1001,6 +1018,23 @@ static void BCanPdu_RxHandler_ODB_0x59(CanPduRxStatus_t status)
     }
 }
 
+//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+#if defined __FIT_Aeon_H
+static void BCanPdu_RxHandler_ODB_0x60(CanPduRxStatus_t status)
+{
+    switch(status) {
+        case CANPDU_RX_LOST_STATUS:
+            break;
+        case CANPDU_RX_UPDATE_STATUS:
+            ble_ccc_send_evt(CCC_EVT_RECV_CAN_DATA,CANID_ODB_0x60,NULL,NULL);
+            break;
+        default:
+            break;
+    }
+}
+#endif
+
+
 #ifdef FIT_DEBUG_NO_SA 
 static void BCanPdu_RxHandler_UWB_0x313(CanPduRxStatus_t status)
 {
@@ -1370,6 +1404,16 @@ void BCanPdu_Get_ODB59_Data(uint8* data)
 {
     core_mm_copy(data,g_BCanPdu_ODB_0x59.Data,64U);
 }
+
+//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+#if defined __FIT_Aeon_H
+void BCanPdu_Get_ODB60_Data(uint8* data)
+{
+    core_mm_copy(data,g_BCanPdu_ODB_0x60.Data,64U);
+}
+#endif
+
+
 /*!
  * \brief  BCanPdu_VarInit, 初始化BCAN报文变量
  * \param  None

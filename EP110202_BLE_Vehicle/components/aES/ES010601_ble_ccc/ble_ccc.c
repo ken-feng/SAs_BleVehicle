@@ -26,6 +26,10 @@ QueueHandle_t  ccc_queue;
 extern volatile u8 intIRQFlag;
 extern u8 fobAddress[6];
 extern u8 mBleConnectStatus;
+#if defined __FIT_Aeon_H
+extern uint16_t	g_KeylessTriggerDistance;
+#endif
+
 
 #define BLE_CCC_SLOT_MAX_NUMBER                     15/*白名单最大存储SLOT记录条数为15条*/
 
@@ -743,6 +747,15 @@ void ble_ccc_can_process(cccCanId_t cccCanId)
     	BCanPdu_Get_ODB59_Data(tmpData);
         ble_ccc_send_evt(CCC_EVT_TEST_SET_FOB_ADDR,0U,tmpData,6U);
         break;
+
+	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+	#if defined __FIT_Aeon_H
+    case CANID_ODB_0x60:
+    	BCanPdu_Get_ODB60_Data(tmpData);
+        ble_ccc_send_evt(CCC_EVT_TEST_SET_DISTANCE,0U,tmpData,2U);
+        break;
+	#endif
+
     default:
         break;
     }
@@ -994,6 +1007,17 @@ void ble_ccc_process(void)
             //(void)Gap_StopScanning();
         }
     }
+    //============================================================================
+	// Setup Distance Trigger
+	//============================================================================
+	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+	#if defined __FIT_Aeon_H
+    else if (gRecvQueuePtr.evtType == CCC_EVT_TEST_SET_DISTANCE)
+    {
+//        core_mm_copy(g_KeylessTriggerDistance,gRecvQueuePtr.dataBuff, gRecvQueuePtr.length);
+
+    }
+	#endif
     //============================================================================
 	//
 	//============================================================================

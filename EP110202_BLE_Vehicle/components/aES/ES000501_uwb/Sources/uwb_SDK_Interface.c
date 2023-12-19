@@ -34,6 +34,24 @@ ST_UWBSource 		stSource;
 
 uint8_t FAnchor_Version[3] = {0x00, 0x09, 0x00};
 
+#if defined __FIT_Aeon_H
+
+typedef union{
+	unsigned char Byte;
+	struct{
+//		unsigned char vaild:1;
+		unsigned char InRange:1;
+		unsigned char reserved:7;
+	}bits;
+}KeylessStates;
+
+KeylessStates			g_KeylessState;
+uint16_t				g_KeylessScopeDist = 500;		// unit is cm
+uint8_t					g_debounce01_cnt = 0;			// Out2In debounce counter
+uint8_t					g_debounce10_cnt = 0;			// In2Out debounce counter
+#endif
+
+
 static E_UWBErrCode get_local_index(uint8_t* local_index)
 {
 #if defined(UWB_RESPONDER)
@@ -609,6 +627,81 @@ static int API_UQ_Ranging_NTF_Cache(fp_UQ_MSGSend_t fp_send_msg)
 //********************************************************************************
 //
 //********************************************************************************
+#if defined __FIT_Aeon_H
+void ccc_detect_keyless_distance(ST_Ranging_Data* pst_ranging_dat)
+{
+	unsigned char i;
+
+	//============================================================================
+	// Start Connect
+	//============================================================================
+//	if(g_KeylessState.bits.vaild==0)
+//	{
+//		for(i=0; i<DEF_RANGING_RESULT_BUFFER_SIZE; i++)
+//		{
+//			if(pst_ranging_dat->bufDistQueue[i]==0x00)
+//			{
+//				break;
+//			}
+//			else if(){
+//
+//			}
+//			else{
+//
+//			}
+//		}
+//	}
+	//============================================================================
+	// Detect Distance
+	//============================================================================
+	if(g_KeylessState.bits.InRange)
+	{
+		//------------------------------------------------------------------------
+		// Check 5 Times
+		//------------------------------------------------------------------------
+		for(i=0; i<DEF_RANGING_RESULT_BUFFER_SIZE; i++)
+		{
+			//--------------------------------------------------------------------
+			// In to Out ( more limit + 30cm)
+			//--------------------------------------------------------------------
+			if(pst_ranging_dat->bufDistQueue[4]>g_KeylessScopeDist+30)
+			{
+				g_KeylessState.bits.InRange = 0;
+			}
+			else{
+				g_KeylessState.bits.InRange = 1;
+				break;
+			}
+		}
+	}
+	else if(g_KeylessState.bits.InRange==0)
+	{
+		//------------------------------------------------------------------------
+		// Check 5 Times
+		//------------------------------------------------------------------------
+		for(i=0; i<DEF_RANGING_RESULT_BUFFER_SIZE; i++)
+		{
+			//--------------------------------------------------------------------
+			// Out to In ( less limit - 30cm)
+			//--------------------------------------------------------------------
+			if(pst_ranging_dat->bufDistQueue[i]<g_KeylessScopeDist-30)
+			{
+				g_KeylessState.bits.InRange = 1;
+			}
+			else{
+				g_KeylessState.bits.InRange = 0;
+				break;
+			}
+		}
+	}
+}
+#endif
+//********************************************************************************
+
+
+//********************************************************************************
+//
+//********************************************************************************
 int API_UQ_Ranging_Result(fp_UQ_MSGSend_t callbackfun)
 {
 	E_UWBErrCode			ResCode 		= UWB_Err_Success_0;
@@ -682,8 +775,10 @@ int API_UQ_Ranging_Result(fp_UQ_MSGSend_t callbackfun)
 	//============================================================================
 	// Distance [0]old~[4]new
 	//============================================================================
+	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
 	#if defined __FIT_Aeon_H
-
+	ccc_detect_keyless_distance(&stSource.stUCIState.stRaningDat);
+	*canbuf = g_KeylessState.Byte;	canbuf += 1;
 	#endif
 
 	//debug data
@@ -708,9 +803,16 @@ int API_UQ_Ranging_Result(fp_UQ_MSGSend_t callbackfun)
 	//============================================================================
 	//
 	//============================================================================
+	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+	#if defined __FIT_Aeon_H
+	sendlens = 20+1;
+	#else
 	//sendlens = 12;
 	sendlens = 20;
 	//sendlens = 20 + 10;
+	#endif
+
+
 	callbackfun(UWB_Ranging_Result_Notice, stSource.bufCANOut, &sendlens);
 	stSource.stUCIState.stTimerTools.fpOSDelay(50);//need change to  use the os delay
 	return ResCode;

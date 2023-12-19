@@ -60,7 +60,10 @@ typedef enum
 
 	CCC_EVT_WRITE_WHITELIST,		/*写白名单*/
 	CCC_EVT_TEST_SET_FOB_ADDR,		/*设置FOBMac地址*/
-
+	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+	#if defined __FIT_Aeon_H
+	CCC_EVT_TEST_SET_DISTANCE,		//Setup Distance Trigger
+	#endif
 	CCC_EVT_TIMER_HANDLER,          /*timer handler转task处理*/
 	
 	
@@ -265,6 +268,10 @@ typedef enum
 
 	CANID_ODB_0x58,
 	CANID_ODB_0x59,
+	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+	#if defined __FIT_Aeon_H
+	CANID_ODB_0x60,
+	#endif
 }cccCanId_t;
 /**
  * @brief
