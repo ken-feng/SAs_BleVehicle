@@ -31,13 +31,15 @@ extern "C" {
 #define BCANPDU_T_TX_DISPATCH         ((uint16)1U) /* 发送调度时间, 单位 ms */
 #ifdef FIT_DEBUG_NO_SA    
 	#define BCANPDU_N_RX                  ((uint8)33) //((uint8)16)    /* 接收报文数量 */
+	#define BCANPDU_N_TX                  ((uint8)9)     			   /* 发送报文数量 */
 //Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
 #elif defined 	__FIT_Aeon_H
 	#define BCANPDU_N_RX                  ((uint8)30) //((uint8)16)    /* 接收报文数量 */
+	#define BCANPDU_N_TX                  ((uint8)10)     			   /* 发送报文数量 */
 #else
 	#define BCANPDU_N_RX                  ((uint8)29) //((uint8)16)    /* 接收报文数量 */
+	#define BCANPDU_N_TX                  ((uint8)9)     			   /* 发送报文数量 */
 #endif
-#define BCANPDU_N_TX                  ((uint8)9)     /* 发送报文数量 */
 
 #define BCANPDU_N_CLR_DTC_CONFIRM     ((uint8)5)     /* 清除报文 DTC 确认次数 */
 #define BCANPDU_N_RECOVER_CONFIRM     ((uint8)5)     /* 报文恢复确认次数 */
@@ -550,7 +552,19 @@ typedef union
     {
         uint8 Data[64];
     } Layout;
-} BCanPdu_ODB_0x60_t;
+} BCanPdu_OBD_0x60_t;
+#endif
+
+//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+#if defined __FIT_Aeon_H
+typedef union
+{
+    uint8 Data[64];
+    struct
+    {
+        uint8 Data[64];
+    } Layout;
+} BCanPdu_OBD_0x61_t;
 #endif
 
 void BCanPdu_Get_ODB58_Data(uint8* data);

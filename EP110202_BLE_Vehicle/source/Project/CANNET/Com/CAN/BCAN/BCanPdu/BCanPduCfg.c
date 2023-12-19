@@ -32,6 +32,10 @@ static void BCanPdu_TxHandler_BLE_0x180(CanPduTxStatus_t status);
 static void BCanPdu_TxHandler_BLE_0x181(CanPduTxStatus_t status);
 
 static void BCanPdu_TxHandler_OBD_0x639(CanPduTxStatus_t status);
+//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+#if defined __FIT_Aeon_H
+static void BCanPdu_TxHandler_OBD_0x061(CanPduTxStatus_t status);
+#endif
 /*!
  * \defgroup SA 发送报文处理函数
  * \{
@@ -82,7 +86,7 @@ static void BCanPdu_RxHandler_ODB_0x58(CanPduRxStatus_t status);
 static void BCanPdu_RxHandler_ODB_0x59(CanPduRxStatus_t status);
 //Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
 #if defined __FIT_Aeon_H
-static void BCanPdu_RxHandler_ODB_0x60(CanPduRxStatus_t status);
+static void BCanPdu_RxHandler_OBD_0x60(CanPduRxStatus_t status);
 #endif
 
 #ifdef FIT_DEBUG_NO_SA 
@@ -151,7 +155,8 @@ BCanPdu_ODB_0x58_t g_BCanPdu_ODB_0x58 = {{0x00}};
 BCanPdu_ODB_0x59_t g_BCanPdu_ODB_0x59 = {{0x00}};  
 //Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
 #if defined __FIT_Aeon_H
-BCanPdu_ODB_0x59_t g_BCanPdu_ODB_0x60 = {{0x00}};
+BCanPdu_OBD_0x60_t g_BCanPdu_OBD_0x60 = {{0x00}};
+BCanPdu_OBD_0x61_t g_BCanPdu_OBD_0x61 = {{0x00}};
 #endif
 
 #ifdef FIT_DEBUG_NO_SA 
@@ -180,46 +185,54 @@ CanTxPduHandle_t g_BCanTxPduList[BCANPDU_N_TX] =
         64, 0, 0, FALSE, 20, 20, FALSE, 1, 0, 
         CANPDU_TX_CLEAR_STATUS, CANPDU_TX_READY, BCanPdu_TxHandler_OBD_0x639
     },
-    { /* 1 */
+    { /* 2 */
     	CAN_EVENT_MSG, 0x100, g_BCanPdu_BLE_0x100.Data,
         64, 0, 0, FALSE, 20, 20, FALSE, 1, 0, 
         CANPDU_TX_CLEAR_STATUS, CANPDU_TX_READY, BCanPdu_TxHandler_BLE_0x100
     },
-    { /* 2 */
+    { /* 3 */
     	CAN_EVENT_MSG, 0x101, g_BCanPdu_BLE_0x101.Data,
         64, 0, 0, FALSE, 20, 20, FALSE, 1, 0, 
         CANPDU_TX_CLEAR_STATUS, CANPDU_TX_READY, BCanPdu_TxHandler_BLE_0x101
     },
-    { /* 3 */
+    { /* 4 */
     	CAN_EVENT_MSG, 0x102, g_BCanPdu_BLE_0x102.Data,
         64, 0, 0, FALSE, 20, 20, FALSE, 1, 0, 
         CANPDU_TX_CLEAR_STATUS, CANPDU_TX_READY, BCanPdu_TxHandler_BLE_0x102
     },
-    { /* 4 */
+    { /* 5 */
     	CAN_EVENT_MSG, 0x103, g_BCanPdu_BLE_0x103.Data,
         64, 0, 0, FALSE, 20, 20, FALSE, 1, 0, 
         CANPDU_TX_CLEAR_STATUS, CANPDU_TX_READY, BCanPdu_TxHandler_BLE_0x103
     },
-    { /* 5 */
+    { /* 6 */
     	CAN_EVENT_MSG, 0x104, g_BCanPdu_BLE_0x104.Data,
         64, 0, 0, FALSE, 20, 20, FALSE, 1, 0, 
         CANPDU_TX_CLEAR_STATUS, CANPDU_TX_READY, BCanPdu_TxHandler_BLE_0x104
     },
-    { /* 4 */
+    { /* 7 */
     	CAN_EVENT_MSG, 0x133, g_BCanPdu_BLE_0x133.Data,
         64, 0, 0, FALSE, 20, 20, FALSE, 1, 0, 
         CANPDU_TX_CLEAR_STATUS, CANPDU_TX_READY, BCanPdu_TxHandler_BLE_0x133
     },
-    { /* 6 */
+    { /* 8 */
     	CAN_EVENT_MSG, 0x180, g_BCanPdu_BLE_0x180.Data,
         64, 0, 0, FALSE, 20, 20, FALSE, 1, 0, 
         CANPDU_TX_CLEAR_STATUS, CANPDU_TX_READY, BCanPdu_TxHandler_BLE_0x180
     },
-    { /* 7 */
+    { /* 9 */
     	CAN_EVENT_MSG, 0x181, g_BCanPdu_BLE_0x181.Data,
         64, 0, 0, FALSE, 20, 20, FALSE, 1, 0, 
         CANPDU_TX_CLEAR_STATUS, CANPDU_TX_READY, BCanPdu_TxHandler_BLE_0x181
+    },
+    //Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+    #if defined __FIT_Aeon_H
+    { /* 10 */
+		CAN_EVENT_MSG, 0x061, g_BCanPdu_OBD_0x61.Data,
+        64, 0, 0, FALSE, 20, 20, FALSE, 1, 0,
+        CANPDU_TX_CLEAR_STATUS, CANPDU_TX_READY, BCanPdu_TxHandler_OBD_0x061
     }
+    #endif
 };
 /*!
  * \}
@@ -437,10 +450,10 @@ CanRxPduHandle_t g_BCanRxPduList[BCANPDU_N_RX] =
 	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
 	#if defined __FIT_Aeon_H
     { /* 29 */
-        CAN_EVENT_MSG, 0x60, g_BCanPdu_ODB_0x60.Data,
+        CAN_EVENT_MSG, 0x60, g_BCanPdu_OBD_0x60.Data,
 	    64, TRUE, FALSE, 20,  0, FALSE,
 	    1, 0, CANPDU_RX_LOST_STATUS,
-	    BCanPdu_RxHandler_ODB_0x60,   NULL_PTR
+	    BCanPdu_RxHandler_OBD_0x60,   NULL_PTR
     },
 	#endif
 #ifdef FIT_DEBUG_NO_SA    
@@ -616,6 +629,23 @@ static void BCanPdu_TxHandler_OBD_0x639(CanPduTxStatus_t status)
     }
 }
 
+//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+#if defined __FIT_Aeon_H
+static void BCanPdu_TxHandler_OBD_0x061(CanPduTxStatus_t status)
+{
+    switch (status) {
+    	case CANPDU_TX_CLEAR_STATUS:
+            BCanPdu_ClearTxPdu(0x061);
+            break;
+        case CANPDU_TX_UPDATE_STATUS:
+
+            break;
+
+        default:
+            break;
+    }
+}
+#endif
 /*Private Interfaces***********************************************/
 
 /*!
@@ -1020,7 +1050,7 @@ static void BCanPdu_RxHandler_ODB_0x59(CanPduRxStatus_t status)
 
 //Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
 #if defined __FIT_Aeon_H
-static void BCanPdu_RxHandler_ODB_0x60(CanPduRxStatus_t status)
+static void BCanPdu_RxHandler_OBD_0x60(CanPduRxStatus_t status)
 {
     switch(status) {
         case CANPDU_RX_LOST_STATUS:
@@ -1237,6 +1267,21 @@ void BCanPdu_Get_BLE181_Data(uint8* data)
     core_mm_copy(data,g_BCanPdu_BLE_0x181.Data,64U);
 }
 
+//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+#if defined __FIT_Aeon_H
+void BCanPdu_Set_OBD061_Data(uint8* data)
+{
+    if (BCanPdu_EnableTxEventMsg(0x061))
+    {
+        core_mm_copy(g_BCanPdu_OBD_0x61.Data,data,64U);
+    }
+}
+void BCanPdu_Get_OBD061_Data(uint8* data)
+{
+    core_mm_copy(data,g_BCanPdu_OBD_0x61.Data,64U);
+}
+#endif
+
 // void BCanPdu_Get_SA200_Data(uint8* data)
 // {
 //     core_mm_copy(data,g_BCanPdu_SA_0x200.Data,64U);
@@ -1409,7 +1454,7 @@ void BCanPdu_Get_ODB59_Data(uint8* data)
 #if defined __FIT_Aeon_H
 void BCanPdu_Get_ODB60_Data(uint8* data)
 {
-    core_mm_copy(data,g_BCanPdu_ODB_0x60.Data,64U);
+    core_mm_copy(data,g_BCanPdu_OBD_0x60.Data,64U);
 }
 #endif
 

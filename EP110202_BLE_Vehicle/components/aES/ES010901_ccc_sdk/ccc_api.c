@@ -294,120 +294,150 @@ void es_recv_uwb_callback(E_UWBControlMessageIndex type, uint8_t* p_msg, uint16_
 	core_mm_copy(tmpBuf+1,p_msg,*p_msglens);
 	ble_ccc_send_evt(CCC_EVT_RECV_UWB_DATA,0U,tmpBuf,65U);
 }
+
+
 void ble_ccc_uwb_int(void);
+
+//********************************************************************************
+//
+//********************************************************************************
 void es_sendCANData(ChannleID_e chId,u8* pInData,u16 pInDataLen)
 {
 	u8 canFDData[64U];
 	core_mm_set(canFDData,0x00,64U);
 	core_mm_copy(canFDData,pInData+1,pInDataLen-1);
+
+	//============================================================================
+	//
+	//============================================================================
 	switch (pInData[0])
 	{
-	case CAN_PKG_ID_UWB_ANCHOR_WAKEUP_RQ:
-		if (chId == CHANNEL_ID_CAN)
+		case CAN_PKG_ID_UWB_ANCHOR_WAKEUP_RQ:
 		{
-			LOG_L_S(CCC_MD,"CAN Send Data ID: 0x100 \r\n");
-			BCanPdu_Set_BLE100_Data(canFDData);
-		}
-		else
+			if (chId == CHANNEL_ID_CAN)
+			{
+				LOG_L_S(CCC_MD,"CAN Send Data ID: 0x100 \r\n");
+				BCanPdu_Set_BLE100_Data(canFDData);
+			}
+			else
+			{
+				#ifndef FIT_DEBUG_NO_UWB
+				/*UWB SPI*/
+				LOG_L_S(CCC_MD,"SPI Send Data ID: 0x100 \r\n");
+				stUWBSDK.fpUQAnchorWakup(canFDData,64,es_recv_uwb_callback);
+				#endif
+			}
+		} break;
+
+		case CAN_PKG_ID_TIME_SYNC_RQ:
 		{
-#ifndef FIT_DEBUG_NO_UWB 			
-			/*UWB SPI*/
-			LOG_L_S(CCC_MD,"SPI Send Data ID: 0x100 \r\n");
-			stUWBSDK.fpUQAnchorWakup(canFDData,64,es_recv_uwb_callback);
-#endif			
-		}
-		break;
-	case CAN_PKG_ID_TIME_SYNC_RQ:
-		if (chId == CHANNEL_ID_CAN)
+			if (chId == CHANNEL_ID_CAN)
+			{
+				LOG_L_S(CCC_MD,"CAN Send Data ID: 0x101 \r\n");
+				BCanPdu_Set_BLE101_Data(canFDData);
+			}
+			else
+			{
+				#ifndef FIT_DEBUG_NO_UWB
+				/*UWB SPI*/
+				LOG_L_S(CCC_MD,"SPI Send Data ID: 0x101 \r\n");
+				stUWBSDK.fpUQTimeSync(canFDData,64,es_recv_uwb_callback);
+				#endif
+			}
+		} break;
+
+		case CAN_PKG_ID_UWB_RANGING_SESSION_SETUP_RQ:
 		{
-			LOG_L_S(CCC_MD,"CAN Send Data ID: 0x101 \r\n");
-			BCanPdu_Set_BLE101_Data(canFDData);
-		}
-		else
+			if (chId == CHANNEL_ID_CAN)
+			{
+				LOG_L_S(CCC_MD,"CAN Send Data ID: 0x102 \r\n");
+				BCanPdu_Set_BLE102_Data(canFDData);
+			}
+			else
+			{
+				#ifndef FIT_DEBUG_NO_UWB
+				/*UWB SPI*/
+				LOG_L_S(CCC_MD,"SPI Send Data ID: 0x102 \r\n");
+				stUWBSDK.fpUQRangingSessionSetup(canFDData,64);
+				#endif
+			}
+		} break;
+
+		case CAN_PKG_ID_UWB_RANGING_SESSION_START_RQ:
 		{
-#ifndef FIT_DEBUG_NO_UWB 			
-			/*UWB SPI*/
-			LOG_L_S(CCC_MD,"SPI Send Data ID: 0x101 \r\n");
-			stUWBSDK.fpUQTimeSync(canFDData,64,es_recv_uwb_callback);
-#endif			
-		}		
-		break;
-	case CAN_PKG_ID_UWB_RANGING_SESSION_SETUP_RQ:
-		if (chId == CHANNEL_ID_CAN)
+			if (chId == CHANNEL_ID_CAN)
+			{
+				LOG_L_S(CCC_MD,"CAN Send Data ID: 0x104 \r\n");
+				BCanPdu_Set_BLE104_Data(canFDData);
+			}
+			else
+			{
+				#ifndef FIT_DEBUG_NO_UWB
+				/*UWB SPI*/
+				LOG_L_S(CCC_MD,"SPI Send Data ID: 0x104 \r\n");
+				stUWBSDK.fpUQRangingCtrl(UWBRangingOPType_Start,canFDData,64,es_recv_uwb_callback);
+				intIRQFlag = 0x00;
+				#endif
+			}
+		} break;
+
+		case CAN_PKG_ID_UWB_RANGING_SESSION_SUSPEND_RECOVER_DELETE_RQ:
 		{
-			LOG_L_S(CCC_MD,"CAN Send Data ID: 0x102 \r\n");
-			BCanPdu_Set_BLE102_Data(canFDData);
-		}
-		else
+			if (chId == CHANNEL_ID_CAN)
+			{
+				LOG_L_S(CCC_MD,"CAN Send Data ID: 0x103 \r\n");
+				BCanPdu_Set_BLE103_Data(canFDData);
+			}
+			else
+			{
+				#ifndef FIT_DEBUG_NO_UWB
+				/*UWB SPI*/
+				LOG_L_S(CCC_MD,"SPI Send Data ID: 0x103 \r\n");
+	//			stUWBSDK.fpUQRangingCtrl(canFDData,64,NULL);
+				//stUWBSDK.fpUQRangingCtrl((E_RangingOPType)(canFDData[0]),canFDData,64,es_recv_uwb_callback);
+				ble_ccc_uwb_int();
+				#endif
+			}
+		} break;
+
+		case CAN_PKG_ID_RKE_EXECUTE_RQ:
 		{
-#ifndef FIT_DEBUG_NO_UWB 			
-			/*UWB SPI*/
-			LOG_L_S(CCC_MD,"SPI Send Data ID: 0x102 \r\n");
-			stUWBSDK.fpUQRangingSessionSetup(canFDData,64);
-#endif			
-		}	
-		break;
-	case CAN_PKG_ID_UWB_RANGING_SESSION_START_RQ:
-		if (chId == CHANNEL_ID_CAN)
+			if (chId == CHANNEL_ID_CAN)
+			{
+				LOG_L_S(CCC_MD,"CAN Send Data ID: 0x180 \r\n");
+				BCanPdu_Set_BLE180_Data(canFDData);
+			}
+			else
+			{
+				/*UWB SPI*/
+			}
+		} break;
+
+		case CAN_PKG_ID_CALIBRATION_DATA_RQ:
 		{
-			LOG_L_S(CCC_MD,"CAN Send Data ID: 0x104 \r\n");
-			BCanPdu_Set_BLE104_Data(canFDData);
-		}
-		else
+			if (chId == CHANNEL_ID_CAN)
+			{
+				LOG_L_S(CCC_MD,"CAN Send Data ID: 0x181 \r\n");
+				BCanPdu_Set_BLE181_Data(canFDData);
+			}
+			else
+			{
+				/*UWB SPI*/
+			}
+		} break;
+
+		default:
 		{
-#ifndef FIT_DEBUG_NO_UWB 			
-			/*UWB SPI*/
-			LOG_L_S(CCC_MD,"SPI Send Data ID: 0x104 \r\n");
-			stUWBSDK.fpUQRangingCtrl(UWBRangingOPType_Start,canFDData,64,es_recv_uwb_callback);
-			intIRQFlag = 0x00;
-#endif			
-		}
-		break;
-	case CAN_PKG_ID_UWB_RANGING_SESSION_SUSPEND_RECOVER_DELETE_RQ:
-		if (chId == CHANNEL_ID_CAN)
-		{
-			LOG_L_S(CCC_MD,"CAN Send Data ID: 0x103 \r\n");
-			BCanPdu_Set_BLE103_Data(canFDData);
-		}
-		else
-		{
-#ifndef FIT_DEBUG_NO_UWB 			
-			/*UWB SPI*/
-			LOG_L_S(CCC_MD,"SPI Send Data ID: 0x103 \r\n");
-//			stUWBSDK.fpUQRangingCtrl(canFDData,64,NULL);
-			//stUWBSDK.fpUQRangingCtrl((E_RangingOPType)(canFDData[0]),canFDData,64,es_recv_uwb_callback);
-			ble_ccc_uwb_int();
-#endif
-		}
-		break;
-	case CAN_PKG_ID_RKE_EXECUTE_RQ:
-		if (chId == CHANNEL_ID_CAN)
-		{
-			LOG_L_S(CCC_MD,"CAN Send Data ID: 0x180 \r\n");
-			BCanPdu_Set_BLE180_Data(canFDData);
-		}
-		else
-		{
-			/*UWB SPI*/
-		}
-		break;
-	case CAN_PKG_ID_CALIBRATION_DATA_RQ:
-		if (chId == CHANNEL_ID_CAN)
-		{
-			LOG_L_S(CCC_MD,"CAN Send Data ID: 0x181 \r\n");
-			BCanPdu_Set_BLE181_Data(canFDData);
-		}
-		else
-		{
-			/*UWB SPI*/
-		}
-		break;
-	default:
-		break;
+		} break;
 	}
 	LOG_L_S_HEX(CCC_MD,"CAN Send Data:",canFDData,64);
 }
+//********************************************************************************
 
+
+//********************************************************************************
+//
+//********************************************************************************
 int es_sendData(ChannleID_e chId, u8* pInData, u16 pInDataLen)
 {
 	// ble_ccc_send_data(chId - CHANNEL_ID_BLE_0,pInData,pInDataLen);
@@ -432,6 +462,10 @@ int es_sendData(ChannleID_e chId, u8* pInData, u16 pInDataLen)
 	
 	return 0;
 }
+//********************************************************************************
+
+
+
 int es_event_notice(ChannleID_e chId, SDKEvent_e sdkEvent, u8* pInData, u16 pInDataLen)
 {
 	switch (sdkEvent)

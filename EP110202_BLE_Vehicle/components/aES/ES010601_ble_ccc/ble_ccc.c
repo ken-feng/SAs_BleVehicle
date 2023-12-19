@@ -26,8 +26,10 @@ QueueHandle_t  ccc_queue;
 extern volatile u8 intIRQFlag;
 extern u8 fobAddress[6];
 extern u8 mBleConnectStatus;
+
+//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
 #if defined __FIT_Aeon_H
-extern uint16_t	g_KeylessTriggerDistance;
+extern uint16_t	g_KeylessScopeDist;
 #endif
 
 
@@ -752,7 +754,8 @@ void ble_ccc_can_process(cccCanId_t cccCanId)
 	#if defined __FIT_Aeon_H
     case CANID_ODB_0x60:
     	BCanPdu_Get_ODB60_Data(tmpData);
-        ble_ccc_send_evt(CCC_EVT_TEST_SET_DISTANCE,0U,tmpData,2U);
+    	BCanPdu_Set_OBD061_Data(tmpData,64U);
+//        ble_ccc_send_evt(CCC_EVT_TEST_SET_DISTANCE,0U,tmpData,2U);
         break;
 	#endif
 
@@ -1014,8 +1017,7 @@ void ble_ccc_process(void)
 	#if defined __FIT_Aeon_H
     else if (gRecvQueuePtr.evtType == CCC_EVT_TEST_SET_DISTANCE)
     {
-//        core_mm_copy(g_KeylessTriggerDistance,gRecvQueuePtr.dataBuff, gRecvQueuePtr.length);
-
+//        core_mm_copy(g_KeylessScopeDist,gRecvQueuePtr.dataBuff, gRecvQueuePtr.length);
     }
 	#endif
     //============================================================================

@@ -47,8 +47,6 @@ typedef union{
 
 KeylessStates			g_KeylessState;
 uint16_t				g_KeylessScopeDist = 500;		// unit is cm
-uint8_t					g_debounce01_cnt = 0;			// Out2In debounce counter
-uint8_t					g_debounce10_cnt = 0;			// In2Out debounce counter
 #endif
 
 
