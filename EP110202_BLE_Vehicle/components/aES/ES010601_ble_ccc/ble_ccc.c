@@ -578,12 +578,20 @@ u8 ble_ccc_send_leSetPhyRequest(ChannleID_e chId)
 //	ble_ccc_send_evt(CCC_EVT_LESETPHY,chId,NULL,0);
 }
 
+
+//********************************************************************************
+//
+//********************************************************************************
 u8 ble_ccc_send_data(u8 deviceId, u8* inPut, u16 length)
 {
     ble_ccc_send_evt(CCC_EVT_SEND_DATA,deviceId,inPut,length);
 }
+//********************************************************************************
 
 
+//********************************************************************************
+//
+//********************************************************************************
 void ble_ccc_can_process(cccCanId_t cccCanId)
 {
     u8 tmpData[65U];
@@ -753,10 +761,45 @@ void ble_ccc_can_process(cccCanId_t cccCanId)
 	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
 	#if defined __FIT_Aeon_H
     case CANID_ODB_0x60:
+    {
     	BCanPdu_Get_ODB60_Data(tmpData);
-    	BCanPdu_Set_OBD061_Data(tmpData,64U);
-//        ble_ccc_send_evt(CCC_EVT_TEST_SET_DISTANCE,0U,tmpData,2U);
-        break;
+
+
+    	g_KeylessScopeDist = ((uint16_t)tmpData[0]<<8 | tmpData[1]);
+
+        //----------------------------------------------------------------------------
+        // [ min ] - 1m
+        //----------------------------------------------------------------------------
+        if(g_KeylessScopeDist<100)
+        {
+    		tmpData[0] = 0x00; tmpData[1] = 0x64;
+        	g_KeylessScopeDist = 100;
+        }
+        //----------------------------------------------------------------------------
+        // [ max ] - 10m
+        //----------------------------------------------------------------------------
+        else if(g_KeylessScopeDist > 1000)
+        {
+    		tmpData[0] = 0x03; tmpData[1] = 0xE8;
+        	g_KeylessScopeDist = 1000;
+        }
+    	//------------------------------------------------------------------------
+    	// update successful to setup
+    	//------------------------------------------------------------------------
+    	if(NVM_SUCCESS==KW38_Write_eeprom(0, tmpData,2))
+    	{
+    		g_KeylessScopeDist = ((uint16_t)tmpData[0]<<8 | tmpData[1]);
+        	BCanPdu_Set_OBD061_Data(tmpData,64U);
+    	}
+    	//------------------------------------------------------------------------
+    	// update fail to 5m
+    	//------------------------------------------------------------------------
+    	else{
+    		tmpData[0] = 0x01; tmpData[1] = 0xF4;
+    		g_KeylessScopeDist = 500;
+    	}
+		BCanPdu_Set_OBD061_Data(tmpData,64U);
+    } break;
 	#endif
 
     default:
@@ -765,6 +808,8 @@ void ble_ccc_can_process(cccCanId_t cccCanId)
     //LOG_L_S_HEX(CCC_MD,"CAN Receive Data:",tmpData,65U);
     ccc_api_data_request(CHANNEL_ID_CAN,tmpData,65U);
 }
+//********************************************************************************
+
 
 //********************************************************************************
 //
