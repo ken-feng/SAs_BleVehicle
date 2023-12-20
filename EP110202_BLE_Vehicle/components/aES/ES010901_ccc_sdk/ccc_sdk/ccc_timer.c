@@ -469,10 +469,15 @@ void ccc_timer_handler_ranging_location_in_task(u8 connId)
 {
 #ifdef CCC_LOCATION_IN_MCU_SDK
     ccc_loc_func_start_ranging_location();
+
+//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+#elif defined __FIT_Aeon_H
+
 #else
     ccc_timer_check_location_result_expired(connId);
 #endif
 }
+
 
 CCCErrCode_e ccc_timer_handler_in_task(u8* parIn, u16 parInLen)
 {
