@@ -11,6 +11,14 @@
 #include "../../../aES/ES010901_ccc_sdk/ccc_protocol/ccc_can.h"
 #include "../../ES010601_ble_ccc/ble_ccc.h"
 #endif
+//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+#if defined __FIT_Aeon_H
+#include "fsl_gpio.h"
+#define __KeylessTrigger_ON()			GPIO_PinWrite (GPIOB, 2, 1) //PB2
+#define __KeylessTrigger_OFF()			GPIO_PinWrite (GPIOB, 2, 0) //PB2
+#endif
+
 static int API_UQ_Device_Init			(fp_UQ_MSGSend_t fp_send_msg);
 static int API_UQ_Device_Reset			(fp_UQ_MSGSend_t fp_send_msg);
 static int API_UQ_Get_Caps				(ST_UWBProtocol* pst_ptl, fp_UQ_MSGSend_t fp_send_msg);
@@ -631,25 +639,6 @@ void ccc_detect_keyless_distance(ST_Ranging_Data* pst_ranging_dat)
 	unsigned char i;
 
 	//============================================================================
-	// Start Connect
-	//============================================================================
-//	if(g_KeylessState.bits.vaild==0)
-//	{
-//		for(i=0; i<DEF_RANGING_RESULT_BUFFER_SIZE; i++)
-//		{
-//			if(pst_ranging_dat->bufDistQueue[i]==0x00)
-//			{
-//				break;
-//			}
-//			else if(){
-//
-//			}
-//			else{
-//
-//			}
-//		}
-//	}
-	//============================================================================
 	// Detect Distance
 	//============================================================================
 	if(g_KeylessState.bits.InRange)
@@ -665,6 +654,7 @@ void ccc_detect_keyless_distance(ST_Ranging_Data* pst_ranging_dat)
 			if(pst_ranging_dat->bufDistQueue[4]>g_KeylessScopeDist+30)
 			{
 				g_KeylessState.bits.InRange = 0;
+				__KeylessTrigger_OFF();
 			}
 			else{
 				g_KeylessState.bits.InRange = 1;
@@ -685,6 +675,7 @@ void ccc_detect_keyless_distance(ST_Ranging_Data* pst_ranging_dat)
 			if(pst_ranging_dat->bufDistQueue[i]<g_KeylessScopeDist-30)
 			{
 				g_KeylessState.bits.InRange = 1;
+				__KeylessTrigger_ON();
 			}
 			else{
 				g_KeylessState.bits.InRange = 0;

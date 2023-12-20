@@ -1056,16 +1056,6 @@ void ble_ccc_process(void)
         }
     }
     //============================================================================
-	// Setup Distance Trigger
-	//============================================================================
-	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
-	#if defined __FIT_Aeon_H
-    else if (gRecvQueuePtr.evtType == CCC_EVT_TEST_SET_DISTANCE)
-    {
-//        core_mm_copy(g_KeylessScopeDist,gRecvQueuePtr.dataBuff, gRecvQueuePtr.length);
-    }
-	#endif
-    //============================================================================
 	//
 	//============================================================================
     else if(gRecvQueuePtr.evtType == CCC_EVT_SEND_PRIVATE_DATA)
