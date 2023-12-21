@@ -14,8 +14,16 @@
 #include "Ble_Spi_Drv.h"
 #include "se_common_type.h"
 #include "../ES000501_uwb/Sources/uwb_SDK_Interface.h"
+//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+#if defined __FIT_Aeon_H
+#include "System_RamDefine.h"
+#endif
 
 extern volatile u8 intIRQFlag;
+//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+#if defined __FIT_Aeon_H
+extern KeylessStates		g_KeylessState;
+#endif
 
 struct ccc_config_t tempCccConfig;
 void ccc_log_print(u8* pdata, u16 length)
@@ -317,7 +325,11 @@ void es_sendCANData(ChannleID_e chId,u8* pInData,u16 pInDataLen)
 			if (chId == CHANNEL_ID_CAN)
 			{
 				LOG_L_S(CCC_MD,"CAN Send Data ID: 0x100 \r\n");
+				#if defined __FIT_Aeon_H
+
+				#else
 				BCanPdu_Set_BLE100_Data(canFDData);
+				#endif
 			}
 			else
 			{
@@ -334,7 +346,12 @@ void es_sendCANData(ChannleID_e chId,u8* pInData,u16 pInDataLen)
 			if (chId == CHANNEL_ID_CAN)
 			{
 				LOG_L_S(CCC_MD,"CAN Send Data ID: 0x101 \r\n");
+				//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+				#if defined __FIT_Aeon_H
+
+				#else
 				BCanPdu_Set_BLE101_Data(canFDData);
+				#endif
 			}
 			else
 			{
@@ -396,7 +413,12 @@ void es_sendCANData(ChannleID_e chId,u8* pInData,u16 pInDataLen)
 			if (chId == CHANNEL_ID_CAN)
 			{
 				LOG_L_S(CCC_MD,"CAN Send Data ID: 0x103 \r\n");
+				//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+				#if defined __FIT_Aeon_H
+				g_KeylessState.bits.StartReport = 0;
+				#else
 				BCanPdu_Set_BLE103_Data(canFDData);
+				#endif
 			}
 			else
 			{

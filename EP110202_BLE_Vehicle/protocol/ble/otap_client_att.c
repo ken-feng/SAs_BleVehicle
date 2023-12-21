@@ -62,6 +62,11 @@
 #include "flash_api_extern.h"
 #include "hw_flash.h"
 #include "ble_ccc.h"
+#if defined __FIT_Aeon_H
+#include "fsl_gpio.h"
+#define __BLE_CONNECT()				GPIO_PinWrite (GPIOB, 3, 1) //PB3
+#define __BLE_DISCONNECT()			GPIO_PinWrite (GPIOB, 3, 0) //PB3
+#endif
 /************************************************************************************
 *************************************************************************************
 * Extern functions
@@ -1091,6 +1096,11 @@ static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEve
     {
         case gConnEvtConnected_c:
         {
+        	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+        	#if defined __FIT_Aeon_H
+        	__BLE_CONNECT();
+			#endif
+
             //if (TMR_IsTimerActive(switchTimerId))
             {
                 (void)TMR_StopTimer(switchTimerId);
@@ -1203,10 +1213,18 @@ static void BleApp_ConnectionCallback (deviceId_t peerDeviceId, gapConnectionEve
 
         case gConnEvtDisconnected_c:
         {
-            uintn8_t bondedCount = 0;
+        	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+        	#if defined __FIT_Aeon_H
+        	__BLE_DISCONNECT();
+			#endif
+
+        	uintn8_t bondedCount = 0;
 #if (gHidService_c)||(gHidService_c)
 			(void)Hid_Unsubscribe();
 #endif
+			//--------------------------------------------------------------------
+			// [ Disconnect Reason ] - gHciLLResponseTimeout_c / gHciConnectionFailedToBeEstablishedOrSyncTimeout_c
+			//--------------------------------------------------------------------
             if ((pConnectionEvent->eventData.disconnectedEvent.reason == 0x122)||(pConnectionEvent->eventData.disconnectedEvent.reason == 0x13E))
             {
                 NVIC_SystemReset();

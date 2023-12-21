@@ -12,6 +12,10 @@
 #include "../../ES010601_ble_ccc/ble_ccc.h"
 #endif
 //Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+#if defined __FIT_Aeon_H
+#include "System_RamDefine.h"
+#endif
+
 //Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
 #if defined __FIT_Aeon_H
 #include "fsl_gpio.h"
@@ -42,17 +46,8 @@ ST_UWBSource 		stSource;
 
 uint8_t FAnchor_Version[3] = {0x00, 0x09, 0x00};
 
+//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
 #if defined __FIT_Aeon_H
-
-typedef union{
-	unsigned char Byte;
-	struct{
-//		unsigned char vaild:1;
-		unsigned char InRange:1;
-		unsigned char reserved:7;
-	}bits;
-}KeylessStates;
-
 KeylessStates			g_KeylessState;
 uint16_t				g_KeylessScopeDist = 500;		// unit is cm
 #endif
@@ -644,6 +639,7 @@ void ccc_detect_keyless_distance(ST_Ranging_Data* pst_ranging_dat)
 	if(pst_ranging_dat->bufDistQueue[0]==0 && pst_ranging_dat->bufDistQueue[1]==0 && pst_ranging_dat->bufDistQueue[2]==0
 		 && pst_ranging_dat->bufDistQueue[3]==0 && pst_ranging_dat->bufDistQueue[4]==0)
 	{
+		g_KeylessState.bits.StartReport = 0;
 		g_KeylessState.bits.InRange = 0;
 		__KeylessTrigger_OFF();
 		return;
@@ -685,6 +681,7 @@ void ccc_detect_keyless_distance(ST_Ranging_Data* pst_ranging_dat)
 			//--------------------------------------------------------------------
 			if(pst_ranging_dat->bufDistQueue[i]<g_KeylessScopeDist-30)
 			{
+				g_KeylessState.bits.StartReport = 1;
 				g_KeylessState.bits.InRange = 1;
 				__KeylessTrigger_ON();
 			}
@@ -1101,7 +1098,12 @@ int DEBUG_MSG_SEND(E_UWBControlMessageIndex msgtype, uint8_t* pcmd, uint16_t* pc
 {
 	u8 tmpBuf[65u];
 	core_mm_set(tmpBuf,0x00u,65u);
+	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+	#if defined __FIT_Aeon_H
+	if (msgtype == UWB_Ranging_Result_Notice && g_KeylessState.bits.StartReport==1)		// In Range to report
+	#else
 	if (msgtype == UWB_Ranging_Result_Notice)
+	#endif
 	{
 		core_mm_copy(tmpBuf,pcmd,*pcmdlens);
 		BCanPdu_Set_BLE133_Data(tmpBuf,64U);
