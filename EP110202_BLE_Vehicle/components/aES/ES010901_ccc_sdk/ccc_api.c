@@ -351,7 +351,12 @@ void es_sendCANData(ChannleID_e chId,u8* pInData,u16 pInDataLen)
 			if (chId == CHANNEL_ID_CAN)
 			{
 				LOG_L_S(CCC_MD,"CAN Send Data ID: 0x102 \r\n");
+				//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+				#if defined __FIT_Aeon_H
+
+				#else
 				BCanPdu_Set_BLE102_Data(canFDData);
+				#endif
 			}
 			else
 			{
@@ -368,7 +373,12 @@ void es_sendCANData(ChannleID_e chId,u8* pInData,u16 pInDataLen)
 			if (chId == CHANNEL_ID_CAN)
 			{
 				LOG_L_S(CCC_MD,"CAN Send Data ID: 0x104 \r\n");
+				//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+				#if defined __FIT_Aeon_H
+
+				#else
 				BCanPdu_Set_BLE104_Data(canFDData);
+				#endif
 			}
 			else
 			{

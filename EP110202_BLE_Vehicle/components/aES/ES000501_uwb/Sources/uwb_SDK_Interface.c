@@ -735,25 +735,53 @@ int API_UQ_Ranging_Result(fp_UQ_MSGSend_t callbackfun)
 	// Response Code
 	//============================================================================
 	LOG_L_S_HEX(CCC_MD,"Anchor-Distance List : ", stSource.stUCIState.stRaningDat.bufDistQueue, 10);
+	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+	#if defined __FIT_Aeon_H
+
+	#else
 	*canbuf = 0x00; canbuf += 1;
+	#endif
 	//============================================================================
 	// UWB session ID
 	//============================================================================
+	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+	#if defined __FIT_Aeon_H
+
+	#else
 	*canbuf = core_dcm_u16_hi(core_dcm_u32_hi(stSource.stUCIState.stSession.u32CurrSessionID)); canbuf += 1;
 	*canbuf = core_dcm_u16_lo(core_dcm_u32_hi(stSource.stUCIState.stSession.u32CurrSessionID)); canbuf += 1;
 	*canbuf = core_dcm_u16_hi(core_dcm_u32_lo(stSource.stUCIState.stSession.u32CurrSessionID)); canbuf += 1;
 	*canbuf = core_dcm_u16_lo(core_dcm_u32_lo(stSource.stUCIState.stSession.u32CurrSessionID)); canbuf += 1;
+	#endif
 	//============================================================================
 	// STS index
 	//============================================================================
+	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+	#if defined __FIT_Aeon_H
+
+	#else
 	*canbuf = core_dcm_u16_hi(core_dcm_u32_hi(stSource.stUCIState.stSession.u32STSIndex)); canbuf += 1;
 	*canbuf = core_dcm_u16_lo(core_dcm_u32_hi(stSource.stUCIState.stSession.u32STSIndex)); canbuf += 1;
 	*canbuf = core_dcm_u16_hi(core_dcm_u32_lo(stSource.stUCIState.stSession.u32STSIndex)); canbuf += 1;
 	*canbuf = core_dcm_u16_lo(core_dcm_u32_lo(stSource.stUCIState.stSession.u32STSIndex)); canbuf += 1;
+	#endif
 	//============================================================================
 	// Anchor index (Vehicle is no.4 in smart access system)
 	//============================================================================
+	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+	#if defined __FIT_Aeon_H
+
+	#else
 	*canbuf = stSource.stUCIState.u8UWBLocalcIndex;canbuf += 1;
+	#endif
+	//============================================================================
+	// Distance [0]old~[4]new
+	//============================================================================
+	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+	#if defined __FIT_Aeon_H
+	ccc_detect_keyless_distance(&stSource.stUCIState.stRaningDat);
+	*canbuf = g_KeylessState.Byte;	canbuf += 1;
+	#endif
 	//============================================================================
 	// Distance [0]old~[4]new
 	//============================================================================
@@ -771,17 +799,9 @@ int API_UQ_Ranging_Result(fp_UQ_MSGSend_t callbackfun)
 
 	*canbuf = core_dcm_u16_hi(stSource.stUCIState.stRaningDat.bufDistQueue[4]); canbuf += 1;
 	*canbuf = core_dcm_u16_lo(stSource.stUCIState.stRaningDat.bufDistQueue[4]); canbuf += 1;
-
 	//============================================================================
-	// Distance [0]old~[4]new
-	//============================================================================
-	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
-	#if defined __FIT_Aeon_H
-	ccc_detect_keyless_distance(&stSource.stUCIState.stRaningDat);
-	*canbuf = g_KeylessState.Byte;	canbuf += 1;
-	#endif
-
 	//debug data
+	//============================================================================
 //	*canbuf = core_dcm_u16_hi(u16tempbuf[0]); canbuf += 1;
 //	*canbuf = core_dcm_u16_lo(u16tempbuf[0]); canbuf += 1;
 //
@@ -805,7 +825,7 @@ int API_UQ_Ranging_Result(fp_UQ_MSGSend_t callbackfun)
 	//============================================================================
 	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
 	#if defined __FIT_Aeon_H
-	sendlens = 20+1;
+	sendlens = 11;
 	#else
 	//sendlens = 12;
 	sendlens = 20;
@@ -1083,11 +1103,6 @@ int DEBUG_MSG_SEND(E_UWBControlMessageIndex msgtype, uint8_t* pcmd, uint16_t* pc
 	core_mm_set(tmpBuf,0x00u,65u);
 	if (msgtype == UWB_Ranging_Result_Notice)
 	{
-		//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
-		#if defined __FIT_Aeon_H
-
-
-		#endif
 		core_mm_copy(tmpBuf,pcmd,*pcmdlens);
 		BCanPdu_Set_BLE133_Data(tmpBuf,64U);
 		return 0U;
