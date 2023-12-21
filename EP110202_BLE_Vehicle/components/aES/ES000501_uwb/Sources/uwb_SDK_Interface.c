@@ -639,6 +639,17 @@ void ccc_detect_keyless_distance(ST_Ranging_Data* pst_ranging_dat)
 	unsigned char i;
 
 	//============================================================================
+	// UWB Disconnect
+	//============================================================================
+	if(pst_ranging_dat->bufDistQueue[0]==0 && pst_ranging_dat->bufDistQueue[1]==0 && pst_ranging_dat->bufDistQueue[2]==0
+		 && pst_ranging_dat->bufDistQueue[3]==0 && pst_ranging_dat->bufDistQueue[4]==0)
+	{
+		g_KeylessState.bits.InRange = 0;
+		__KeylessTrigger_OFF();
+		return;
+	}
+
+	//============================================================================
 	// Detect Distance
 	//============================================================================
 	if(g_KeylessState.bits.InRange)
@@ -651,7 +662,7 @@ void ccc_detect_keyless_distance(ST_Ranging_Data* pst_ranging_dat)
 			//--------------------------------------------------------------------
 			// In to Out ( more limit + 30cm)
 			//--------------------------------------------------------------------
-			if(pst_ranging_dat->bufDistQueue[4]>g_KeylessScopeDist+30)
+			if(pst_ranging_dat->bufDistQueue[i]>g_KeylessScopeDist+30)
 			{
 				g_KeylessState.bits.InRange = 0;
 				__KeylessTrigger_OFF();

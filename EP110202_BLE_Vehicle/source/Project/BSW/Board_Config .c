@@ -905,7 +905,15 @@ uint8_t KW38_Write_eeprom (uint32_t addr, uint8_t *p_data,uint8_t len)
 		{			
 			if (0U == core_mm_compare(tmpData,p_data,tmpLength))
 			{
-				return;//待更新的数据和保存的数据一致，不写
+				//-------------------------------------------------------------
+				//待更新的数据和保存的数据一致，不写
+				//-------------------------------------------------------------
+				//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+				#if defined __FIT_Aeon_H
+				return NVM_SUCCESS;
+				#else
+				return;
+				#endif
 			}
 		}
 	}

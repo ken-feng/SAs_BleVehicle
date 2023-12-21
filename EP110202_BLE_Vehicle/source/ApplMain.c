@@ -419,19 +419,24 @@ void vApplicationInit(void)
     #if defined __FIT_Aeon_H
     KW38_Read_eeprom(0, read_data,2);
     g_KeylessScopeDist = ((uint16_t)read_data[0]<<8 | read_data[1]);
+
+    //----------------------------------------------------------------------------
+    // [ default ] - 5m
+    //----------------------------------------------------------------------------
+    if(g_KeylessScopeDist==0){
+    	g_KeylessScopeDist = 500;
+    }
     //----------------------------------------------------------------------------
     // [ min ] - 1m
     //----------------------------------------------------------------------------
-    if(g_KeylessScopeDist<100)
-    {
+    else if(g_KeylessScopeDist<100){
     	g_KeylessScopeDist = 100;
     }
     //----------------------------------------------------------------------------
-    // [ max ] - 10m
+    // [ max ] - 50m
     //----------------------------------------------------------------------------
-    else if(g_KeylessScopeDist > 1000)
-    {
-    	g_KeylessScopeDist = 1000;
+    else if(g_KeylessScopeDist > 5000){
+    	g_KeylessScopeDist = 5000;
     }
 	#endif
 

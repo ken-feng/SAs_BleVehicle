@@ -763,8 +763,6 @@ void ble_ccc_can_process(cccCanId_t cccCanId)
     case CANID_ODB_0x60:
     {
     	BCanPdu_Get_ODB60_Data(tmpData);
-
-
     	g_KeylessScopeDist = ((uint16_t)tmpData[0]<<8 | tmpData[1]);
 
         //----------------------------------------------------------------------------
@@ -772,31 +770,38 @@ void ble_ccc_can_process(cccCanId_t cccCanId)
         //----------------------------------------------------------------------------
         if(g_KeylessScopeDist<100)
         {
-    		tmpData[0] = 0x00; tmpData[1] = 0x64;
         	g_KeylessScopeDist = 100;
+        	tmpData[0] = (uint8_t)(g_KeylessScopeDist>>8);
+        	tmpData[1] = (uint8_t)g_KeylessScopeDist;
+        	tmpData[2] = 0x01;									// Set fail (less range)
         }
         //----------------------------------------------------------------------------
-        // [ max ] - 10m
+        // [ max ] - 50m
         //----------------------------------------------------------------------------
-        else if(g_KeylessScopeDist > 1000)
+        else if(g_KeylessScopeDist > 5000)
         {
-    		tmpData[0] = 0x03; tmpData[1] = 0xE8;
-        	g_KeylessScopeDist = 1000;
+        	g_KeylessScopeDist = 5000;
+        	tmpData[0] = (uint8_t)(g_KeylessScopeDist>>8);
+        	tmpData[1] = (uint8_t)g_KeylessScopeDist;
+        	tmpData[2] = 0x02;									// Set fail (over range)
         }
     	//------------------------------------------------------------------------
     	// update successful to setup
     	//------------------------------------------------------------------------
     	if(NVM_SUCCESS==KW38_Write_eeprom(0, tmpData,2))
     	{
-    		g_KeylessScopeDist = ((uint16_t)tmpData[0]<<8 | tmpData[1]);
-        	BCanPdu_Set_OBD061_Data(tmpData,64U);
+//    		g_KeylessScopeDist = ((uint16_t)tmpData[0]<<8 | tmpData[1]);
+        	tmpData[2] = 0x00;									// Set Successful
     	}
     	//------------------------------------------------------------------------
     	// update fail to 5m
     	//------------------------------------------------------------------------
-    	else{
-    		tmpData[0] = 0x01; tmpData[1] = 0xF4;
+    	else
+    	{
     		g_KeylessScopeDist = 500;
+        	tmpData[0] = (uint8_t)(g_KeylessScopeDist>>8);
+        	tmpData[1] = (uint8_t)g_KeylessScopeDist;
+        	tmpData[2] = 0xFF;									// Set fail (write flash error)
     	}
 		BCanPdu_Set_OBD061_Data(tmpData,64U);
     } break;
