@@ -64,8 +64,8 @@
 #include "ble_ccc.h"
 #if defined __FIT_Aeon_H
 #include "fsl_gpio.h"
-#define __BLE_CONNECT()				GPIO_PinWrite (GPIOB, 3, 1) //PB3
-#define __BLE_DISCONNECT()			GPIO_PinWrite (GPIOB, 3, 0) //PB3
+#define __BLE_CONNECT()				GPIO_PinWrite (GPIOB, 3, 0) //PB3
+#define __BLE_DISCONNECT()			GPIO_PinWrite (GPIOB, 3, 1) //PB3
 #endif
 /************************************************************************************
 *************************************************************************************

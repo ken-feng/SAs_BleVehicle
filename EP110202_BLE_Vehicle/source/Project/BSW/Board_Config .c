@@ -302,9 +302,9 @@ void KW38_GPIO_Config (void)
     //Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
 #if defined __FIT_Aeon_H
 	PORT_SetPinMux(PORTB, 2u, kPORT_MuxAsGpio);
-    GPIO_PinInit(GPIOB, 2u, &(gpio_pin_config_t){kGPIO_DigitalOutput, 0U});
+    GPIO_PinInit(GPIOB, 2u, &(gpio_pin_config_t){kGPIO_DigitalOutput, 1U});		//Aeon Keyless
 	PORT_SetPinMux(PORTB, 3u, kPORT_MuxAsGpio);
-    GPIO_PinInit(GPIOB, 3u, &(gpio_pin_config_t){kGPIO_DigitalOutput, 0U});
+    GPIO_PinInit(GPIOB, 3u, &(gpio_pin_config_t){kGPIO_DigitalOutput, 1U});		//Test Pin (BLE connect state)
 #else
 	PORT_SetPinMux(PORTB, 2u, kPORT_MuxAsGpio);
     GPIO_PinInit(GPIOB, 2u, &(gpio_pin_config_t){kGPIO_DigitalOutput, 0U});

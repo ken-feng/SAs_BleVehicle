@@ -19,8 +19,8 @@
 //Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
 #if defined __FIT_Aeon_H
 #include "fsl_gpio.h"
-#define __KeylessTrigger_ON()			GPIO_PinWrite (GPIOB, 2, 1) //PB2
-#define __KeylessTrigger_OFF()			GPIO_PinWrite (GPIOB, 2, 0) //PB2
+#define __KeylessTrigger_ON()			GPIO_PinWrite (GPIOB, 2, 0) //PB2
+#define __KeylessTrigger_OFF()			GPIO_PinWrite (GPIOB, 2, 1) //PB2
 #endif
 
 static int API_UQ_Device_Init			(fp_UQ_MSGSend_t fp_send_msg);
