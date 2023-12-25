@@ -22,7 +22,12 @@
  * \param  None
  * \return E_OK-正常; E_NOT_OK-错误
  */
-uint8 BCanTrcv_RxMsgHandler(flexcan_fd_frame_t* pFrame)
+//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
+#if defined __FIT_Aeon_H
+uint8 BCanTrcv_RxMsgHandler(flexcan_frame_t* pFrame)			// CAN Standard
+#else
+uint8 BCanTrcv_RxMsgHandler(flexcan_fd_frame_t* pFrame)			// CAN FD
+#endif
 {
     uint8 RetFlag = E_OK;
     uint8 i;
@@ -36,11 +41,23 @@ uint8 BCanTrcv_RxMsgHandler(flexcan_fd_frame_t* pFrame)
     if (rawMsg.DataLen < 8) {return E_NOT_OK;} /* 数据长度小于8过滤掉 */
     core_mm_set(rawMsg.Data,0x00,64);
 
-    for ( i = 0; i < 16; i++)
-    {
-        core_dcm_writeBig32(rawMsg.Data+i*4,pFrame->dataWord[i]);
-    }
-    
+    //Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
+    #if defined __FIT_Aeon_H
+    rawMsg.Data[0] = pFrame->dataByte0;
+    rawMsg.Data[1] = pFrame->dataByte1;
+    rawMsg.Data[2] = pFrame->dataByte2;
+    rawMsg.Data[3] = pFrame->dataByte3;
+    rawMsg.Data[4] = pFrame->dataByte4;
+    rawMsg.Data[5] = pFrame->dataByte5;
+    rawMsg.Data[6] = pFrame->dataByte6;
+    rawMsg.Data[6] = pFrame->dataByte7;
+    #else
+	for ( i = 0; i < 16; i++)
+	{
+		core_dcm_writeBig32(rawMsg.Data+i*4,pFrame->dataWord[i]);
+	}
+    #endif
+
 	if (BCanTrcv_IsAppMsg(rawMsg.ID)) {
 		rawMsg.DataLen = 64U;
 		RetFlag = BCanTrcv_WriteAppRxMsg(rawMsg.ID, rawMsg.Data, rawMsg.DataLen);

@@ -52,7 +52,14 @@ unsigned char g_KW36_WakeUp_Source;
 //CAN0
 flexcan_handle_t g_FlexCAN0_Handle;
 flexcan_mb_transfer_t g_FlexCAN0_mb_tx, g_FlexCAN0_mb_rx;
-flexcan_fd_frame_t g_FlexCAN0_frame_Tx, g_FlexCAN0_frame_Rx;
+
+//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
+#if defined __FIT_Aeon_H
+	flexcan_frame_t g_FlexCAN0_frame_Tx, g_FlexCAN0_frame_Rx;
+#else
+	flexcan_fd_frame_t g_FlexCAN0_frame_Tx, g_FlexCAN0_frame_Rx;
+#endif
+
 TypeDef_Board_Driver_Info g_BoardDriverInfo;
 //BLE
 //eeprom
@@ -496,10 +503,14 @@ void CAN0_ISR_CallBack (CAN_Type *base, flexcan_handle_t *handle, status_t statu
 		break;
 	}
 	g_FlexCAN0_mb_rx.mbIdx = RX_MESSAGE_BUFFER_NUM;
-	// g_FlexCAN0_mb_rx.frame = &g_FlexCAN0_frame_Rx;
-	g_FlexCAN0_mb_rx.framefd = &g_FlexCAN0_frame_Rx;
-	//   FLEXCAN_TransferReceiveNonBlocking(CAN0, &g_FlexCAN0_Handle, &g_FlexCAN0_mb_rx);
+	//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
+	#if defined __FIT_Aeon_H
+	g_FlexCAN0_mb_rx.frame = &g_FlexCAN0_frame_Rx;				// Can Standard
+	FLEXCAN_TransferReceiveNonBlocking(CAN0, &g_FlexCAN0_Handle, &g_FlexCAN0_mb_rx);
+	#else
+	g_FlexCAN0_mb_rx.framefd = &g_FlexCAN0_frame_Rx;			// Can FD
 	FLEXCAN_TransferFDReceiveNonBlocking(CAN0, &g_FlexCAN0_Handle, &g_FlexCAN0_mb_rx);
+	#endif
 }
 
 //===========================================================================//
@@ -537,8 +548,12 @@ void KW36_CAN_Config (void)
 	#endif
 	#endif
 
-	// FLEXCAN_Init(CAN0, &flexcanConfig, CLOCK_GetFreq(kCLOCK_Osc0ErClk)/2);
+	//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
+	#if defined __FIT_Aeon_H
+	FLEXCAN_Init(CAN0, &flexcanConfig, CLOCK_GetFreq(kCLOCK_Osc0ErClk)/2);
+	#else
 	FLEXCAN_FDInit(CAN0, &flexcanConfig, CLOCK_GetFreq(kCLOCK_Osc0ErClk)/2, kFLEXCAN_64BperMB, false);
+	#endif
 	/* Create FlexCAN handle structure and set call back function. */
 	FLEXCAN_TransferCreateHandle(CAN0, &g_FlexCAN0_Handle, CAN0_ISR_CallBack, NULL);
 
@@ -558,10 +573,15 @@ void KW36_CAN_Config (void)
 
 	/* Start receive data through Rx Message Buffer. */
 	g_FlexCAN0_mb_rx.mbIdx = RX_MESSAGE_BUFFER_NUM;
-	// g_FlexCAN0_mb_rx.frame = &g_FlexCAN0_frame_Rx;
-	g_FlexCAN0_mb_rx.framefd = &g_FlexCAN0_frame_Rx;
-	// FLEXCAN_TransferReceiveNonBlocking(CAN0, &g_FlexCAN0_Handle, &g_FlexCAN0_mb_rx);
+
+	//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
+	#if defined __FIT_Aeon_H
+	g_FlexCAN0_mb_rx.frame = &g_FlexCAN0_frame_Rx;				// Can Standard
+	FLEXCAN_TransferReceiveNonBlocking(CAN0, &g_FlexCAN0_Handle, &g_FlexCAN0_mb_rx);
+	#else
+	g_FlexCAN0_mb_rx.framefd = &g_FlexCAN0_frame_Rx;			// Can FD
 	FLEXCAN_TransferFDReceiveNonBlocking(CAN0, &g_FlexCAN0_Handle, &g_FlexCAN0_mb_rx);
+	#endif
 }
 
 //===========================================================================//
@@ -616,10 +636,23 @@ unsigned char KW36_CAN_Send_Frame (unsigned long int id, unsigned char *p_buff, 
 //	g_FlexCAN0_frame_Tx.dataByte6 = p_buff[6];
 //	g_FlexCAN0_frame_Tx.dataByte7 = p_buff[7];
 
+	//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
+	#if defined __FIT_Aeon_H
+	g_FlexCAN0_frame_Tx.dataByte0 = p_buff[0];
+	g_FlexCAN0_frame_Tx.dataByte1 = p_buff[1];
+	g_FlexCAN0_frame_Tx.dataByte2 = p_buff[2];
+	g_FlexCAN0_frame_Tx.dataByte3 = p_buff[3];
+
+	g_FlexCAN0_frame_Tx.dataByte4 = p_buff[4];
+	g_FlexCAN0_frame_Tx.dataByte5 = p_buff[5];
+	g_FlexCAN0_frame_Tx.dataByte6 = p_buff[6];
+	g_FlexCAN0_frame_Tx.dataByte7 = p_buff[7];
+	#else
 	for(i = 0u;i<16u;i++)
 	{
 		g_FlexCAN0_frame_Tx.dataWord[i] = core_dcm_mku32(p_buff[i*4u + 0u],p_buff[i*4u + 1u],p_buff[i*4u + 2u],p_buff[i*4u + 3u]);
 	}
+	#endif
 
 #ifdef FIT_DEBUG_NO_SA
 	g_FlexCAN0_frame_Tx.id = FLEXCAN_ID_STD(tmpId);
@@ -638,11 +671,14 @@ unsigned char KW36_CAN_Send_Frame (unsigned long int id, unsigned char *p_buff, 
 	}
 	g_FlexCAN0_mb_tx.mbIdx = TX_MESSAGE_BUFFER_NUM;
 
-
-	// g_FlexCAN0_mb_tx.frame = &g_FlexCAN0_frame_Tx;
-	g_FlexCAN0_mb_tx.framefd = &g_FlexCAN0_frame_Tx;
-	// Result = FLEXCAN_TransferSendNonBlocking(CAN0, &g_FlexCAN0_Handle, &g_FlexCAN0_mb_tx);
+	//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
+	#if defined __FIT_Aeon_H
+	g_FlexCAN0_mb_tx.frame = &g_FlexCAN0_frame_Tx;					// Can Standard
+	Result = FLEXCAN_TransferSendNonBlocking(CAN0, &g_FlexCAN0_Handle, &g_FlexCAN0_mb_tx);
+	#else
+	g_FlexCAN0_mb_tx.framefd = &g_FlexCAN0_frame_Tx;				// Can FD
 	Result = FLEXCAN_TransferFDSendNonBlocking(CAN0, &g_FlexCAN0_Handle, &g_FlexCAN0_mb_tx);
+	#endif
 	
 	//LOG_L_S_HEX(CAN_MD,"CAN Send Frame :",&g_FlexCAN0_frame_Tx,sizeof(g_FlexCAN0_frame_Tx));
 	return Result;
@@ -674,10 +710,16 @@ void KW36_CAN_RX_ISR (void)
 {
 	/* Start receive data through Rx Message Buffer. */
 	g_FlexCAN0_mb_rx.mbIdx = RX_MESSAGE_BUFFER_NUM;
-	// g_FlexCAN0_mb_rx.frame = &g_FlexCAN0_frame_Rx;
-	g_FlexCAN0_mb_rx.framefd = &g_FlexCAN0_frame_Rx;
-	// FLEXCAN_TransferReceiveNonBlocking(CAN0, &g_FlexCAN0_Handle, &g_FlexCAN0_mb_rx);
+
+
+	//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
+	#if defined __FIT_Aeon_H
+	g_FlexCAN0_mb_rx.frame = &g_FlexCAN0_frame_Rx;						// Can Standard
+	FLEXCAN_TransferReceiveNonBlocking(CAN0, &g_FlexCAN0_Handle, &g_FlexCAN0_mb_rx);
+	#else
+	g_FlexCAN0_mb_rx.framefd = &g_FlexCAN0_frame_Rx;					// Can FD
 	FLEXCAN_TransferFDReceiveNonBlocking(CAN0, &g_FlexCAN0_Handle, &g_FlexCAN0_mb_rx);
+	#endif
 	g_FlexCAN0_frame_Rx.id = (g_FlexCAN0_frame_Rx.id >> 18) & 0x7ff;
 	//LOG_L_S_HEX(CAN_MD,"CAN Receive Frame :",&g_FlexCAN0_frame_Rx,sizeof(g_FlexCAN0_frame_Rx));
 

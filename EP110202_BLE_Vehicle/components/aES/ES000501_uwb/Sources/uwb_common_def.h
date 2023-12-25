@@ -63,8 +63,12 @@
 
 //global def
 #define DEF_UWB_CAN_BUF_SIZE 64
-#define DEF_RANGING_RESULT_BUFFER_SIZE 5
-
+//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
+#if defined __FIT_Aeon_H
+	#define DEF_RANGING_RESULT_BUFFER_SIZE 3
+#else
+	#define DEF_RANGING_RESULT_BUFFER_SIZE 5
+#endif
 
 #include <stdint.h>
 #include <stdbool.h>
