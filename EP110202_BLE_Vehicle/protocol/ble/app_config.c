@@ -37,6 +37,14 @@
 #define smpEdiv                 0x1F99
 #define mcEncryptionKeySize_c   16
 
+//Modify (Ken):VEHICLE-V0C02 NO.3 -20231225
+#if defined __FIT_Aeon_H
+#define __AeonScanIntervalTime		480				//480*0.625ms = 300ms
+#define __AeonScanWindowTime        240				//240*0.625ms = 150ms
+
+#define __AeonConMinIntervalTime	16				// 16*1.25ms = 20ms
+#define __AeonConMaxIntervalTime    16				// 16*1.25ms = 20ms
+#endif
 /************************************************************************************
 *************************************************************************************
 * Public memory declarations
@@ -68,8 +76,14 @@ gapAdvertisingParameters_t gAdvParams =
 gapScanningParameters_t gScanParams =
 {
     /* type */              gScanTypeActive_c,
+	//Modify (Ken):VEHICLE-V0C02 NO.3 -20231225
+	#if defined __FIT_Aeon_H
+    /* interval */          __AeonScanIntervalTime,
+    /* window */            __AeonScanWindowTime,
+	#else
     /* interval */          gGapScanIntervalDefault_d,
     /* window */            gGapScanWindowDefault_d,
+	#endif
     /* ownAddressType */    gBleAddrTypePublic_c,
     /* filterPolicy */      gScanWithWhiteList_c,//gScanAll_c,
     /* scanning PHY */      gLePhy1MFlag_c
@@ -78,14 +92,20 @@ gapScanningParameters_t gScanParams =
 /* Default Connection Request Parameters */
 gapConnectionRequestParameters_t gConnReqParams =
 {
-    .scanInterval = 36,
-    .scanWindow = 18,
+    .scanInterval = __AeonScanIntervalTime,
+    .scanWindow = __AeonScanWindowTime,
     .filterPolicy = gUseDeviceAddress_c,
     .ownAddressType = gBleAddrTypePublic_c,
+	//Modify (Ken):VEHICLE-V0C02 NO.3 -20231225
+	#if defined __FIT_Aeon_H
+    .connIntervalMin = __AeonConMinIntervalTime,
+    .connIntervalMax = __AeonConMaxIntervalTime,
+	#else
     .connIntervalMin = 16,
     .connIntervalMax = 16,
+	#endif
     .connLatency = 0,
-    .supervisionTimeout = 300, //1000,//0x0C80,
+    .supervisionTimeout = 300, //1000,//0x0C80,		// 300*10ms = 3s
     .connEventLengthMin = 0,
     .connEventLengthMax = 0xFFFF,
     .initiatingPHYs = gLePhy1MFlag_c,

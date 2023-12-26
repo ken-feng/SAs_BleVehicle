@@ -12,7 +12,7 @@
 #define _APP_PREINCLUDE_H_
 
 #define APP_VERSION_H	0x0C
-#define APP_VERSION_L	0x00
+#define APP_VERSION_L	0x02
 
 
 

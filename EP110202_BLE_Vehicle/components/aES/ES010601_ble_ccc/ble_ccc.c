@@ -614,6 +614,10 @@ void ble_ccc_can_process(cccCanId_t cccCanId)
     //     BCanPdu_Get_SA201_Data(tmpData+1);
     //     break;
 
+//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+#if defined __FIT_Aeon_H
+
+#else
     case CANID_SA_0x210:
         tmpData[0] = CAN_PKG_ID_UWB_ANCHOR_WAKEUP_RS;
         BCanPdu_Get_SA210_Data(tmpData+1);
@@ -723,6 +727,8 @@ void ble_ccc_can_process(cccCanId_t cccCanId)
         tmpData[0] = CAN_PKG_ID_CALIBRATION_DATA_RS;
         BCanPdu_Get_SA2A1_Data(tmpData+1);
         break;
+#endif
+
 #ifdef FIT_DEBUG_NO_SA 
     case CANID_UWB_0x313:
         tmpData[0] = CAN_PKG_ID_UWB_RANGING_RESULT_NOTICE;
@@ -766,7 +772,7 @@ void ble_ccc_can_process(cccCanId_t cccCanId)
     	g_KeylessScopeDist = ((uint16_t)tmpData[0]<<8 | tmpData[1]);
 
         //----------------------------------------------------------------------------
-        // [ min ] - 1m
+        // [ less range min ] - 1m
         //----------------------------------------------------------------------------
         if(g_KeylessScopeDist<100)
         {
@@ -776,7 +782,7 @@ void ble_ccc_can_process(cccCanId_t cccCanId)
         	tmpData[2] = 0x01;									// Set fail (less range)
         }
         //----------------------------------------------------------------------------
-        // [ max ] - 50m
+        // [ over range max ] - 50m
         //----------------------------------------------------------------------------
         else if(g_KeylessScopeDist > 5000)
         {
@@ -785,13 +791,18 @@ void ble_ccc_can_process(cccCanId_t cccCanId)
         	tmpData[1] = (uint8_t)g_KeylessScopeDist;
         	tmpData[2] = 0x02;									// Set fail (over range)
         }
+        //----------------------------------------------------------------------------
+        // [ normal range ] - 1m~50m
+        //----------------------------------------------------------------------------
+        else{
+        	tmpData[2] = 0x00;
+        }
     	//------------------------------------------------------------------------
     	// update successful to setup
     	//------------------------------------------------------------------------
     	if(NVM_SUCCESS==KW38_Write_eeprom(0, tmpData,2))
     	{
-//    		g_KeylessScopeDist = ((uint16_t)tmpData[0]<<8 | tmpData[1]);
-        	tmpData[2] = 0x00;									// Set Successful
+    		__asm("NOP");
     	}
     	//------------------------------------------------------------------------
     	// update fail to 5m
