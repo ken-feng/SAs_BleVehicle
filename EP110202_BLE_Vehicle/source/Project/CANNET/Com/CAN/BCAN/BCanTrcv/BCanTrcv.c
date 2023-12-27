@@ -23,7 +23,7 @@
  * \return E_OK-正常; E_NOT_OK-错误
  */
 //Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
-#if defined __FIT_Aeon_H
+#if defined __FIT_Aeon_StandardCAN_H
 uint8 BCanTrcv_RxMsgHandler(flexcan_frame_t* pFrame)			// CAN Standard
 #else
 uint8 BCanTrcv_RxMsgHandler(flexcan_fd_frame_t* pFrame)			// CAN FD
@@ -42,7 +42,7 @@ uint8 BCanTrcv_RxMsgHandler(flexcan_fd_frame_t* pFrame)			// CAN FD
     core_mm_set(rawMsg.Data,0x00,64);
 
     //Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
-    #if defined __FIT_Aeon_H
+    #if defined __FIT_Aeon_StandardCAN_H
     rawMsg.Data[0] = pFrame->dataByte0;
     rawMsg.Data[1] = pFrame->dataByte1;
     rawMsg.Data[2] = pFrame->dataByte2;

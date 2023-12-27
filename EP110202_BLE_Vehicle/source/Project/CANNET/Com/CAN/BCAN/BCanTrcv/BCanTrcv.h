@@ -36,7 +36,7 @@ extern void BCanTrcv_Init(void);
 extern void BCanTrcv_MsgTxHandler(void);
 
 //Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
-#if defined __FIT_Aeon_H
+#if defined __FIT_Aeon_StandardCAN_H
 	extern uint8 BCanTrcv_RxMsgHandler(flexcan_frame_t* pFrame);			// CAN Standard
 #else
 	extern uint8 BCanTrcv_RxMsgHandler(flexcan_fd_frame_t* pFrame);			// CAN FD

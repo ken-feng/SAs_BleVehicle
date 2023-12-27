@@ -54,7 +54,7 @@ flexcan_handle_t g_FlexCAN0_Handle;
 flexcan_mb_transfer_t g_FlexCAN0_mb_tx, g_FlexCAN0_mb_rx;
 
 //Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
-#if defined __FIT_Aeon_H
+#if defined __FIT_Aeon_StandardCAN_H
 	flexcan_frame_t g_FlexCAN0_frame_Tx, g_FlexCAN0_frame_Rx;
 #else
 	flexcan_fd_frame_t g_FlexCAN0_frame_Tx, g_FlexCAN0_frame_Rx;
@@ -504,7 +504,7 @@ void CAN0_ISR_CallBack (CAN_Type *base, flexcan_handle_t *handle, status_t statu
 	}
 	g_FlexCAN0_mb_rx.mbIdx = RX_MESSAGE_BUFFER_NUM;
 	//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
-	#if defined __FIT_Aeon_H
+	#if defined __FIT_Aeon_StandardCAN_H
 	g_FlexCAN0_mb_rx.frame = &g_FlexCAN0_frame_Rx;				// Can Standard
 	FLEXCAN_TransferReceiveNonBlocking(CAN0, &g_FlexCAN0_Handle, &g_FlexCAN0_mb_rx);
 	#else
@@ -549,7 +549,7 @@ void KW36_CAN_Config (void)
 	#endif
 
 	//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
-	#if defined __FIT_Aeon_H
+	#if defined __FIT_Aeon_StandardCAN_H
 	FLEXCAN_Init(CAN0, &flexcanConfig, CLOCK_GetFreq(kCLOCK_Osc0ErClk)/2);
 	#else
 	FLEXCAN_FDInit(CAN0, &flexcanConfig, CLOCK_GetFreq(kCLOCK_Osc0ErClk)/2, kFLEXCAN_64BperMB, false);
@@ -575,7 +575,7 @@ void KW36_CAN_Config (void)
 	g_FlexCAN0_mb_rx.mbIdx = RX_MESSAGE_BUFFER_NUM;
 
 	//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
-	#if defined __FIT_Aeon_H
+	#if defined __FIT_Aeon_StandardCAN_H
 	g_FlexCAN0_mb_rx.frame = &g_FlexCAN0_frame_Rx;				// Can Standard
 	FLEXCAN_TransferReceiveNonBlocking(CAN0, &g_FlexCAN0_Handle, &g_FlexCAN0_mb_rx);
 	#else
@@ -637,7 +637,7 @@ unsigned char KW36_CAN_Send_Frame (unsigned long int id, unsigned char *p_buff, 
 //	g_FlexCAN0_frame_Tx.dataByte7 = p_buff[7];
 
 	//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
-	#if defined __FIT_Aeon_H
+	#if defined __FIT_Aeon_StandardCAN_H
 	g_FlexCAN0_frame_Tx.dataByte0 = p_buff[0];
 	g_FlexCAN0_frame_Tx.dataByte1 = p_buff[1];
 	g_FlexCAN0_frame_Tx.dataByte2 = p_buff[2];
@@ -672,7 +672,7 @@ unsigned char KW36_CAN_Send_Frame (unsigned long int id, unsigned char *p_buff, 
 	g_FlexCAN0_mb_tx.mbIdx = TX_MESSAGE_BUFFER_NUM;
 
 	//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
-	#if defined __FIT_Aeon_H
+	#if defined __FIT_Aeon_StandardCAN_H
 	g_FlexCAN0_mb_tx.frame = &g_FlexCAN0_frame_Tx;					// Can Standard
 	Result = FLEXCAN_TransferSendNonBlocking(CAN0, &g_FlexCAN0_Handle, &g_FlexCAN0_mb_tx);
 	#else
@@ -713,7 +713,7 @@ void KW36_CAN_RX_ISR (void)
 
 
 	//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
-	#if defined __FIT_Aeon_H
+	#if defined __FIT_Aeon_StandardCAN_H
 	g_FlexCAN0_mb_rx.frame = &g_FlexCAN0_frame_Rx;						// Can Standard
 	FLEXCAN_TransferReceiveNonBlocking(CAN0, &g_FlexCAN0_Handle, &g_FlexCAN0_mb_rx);
 	#else

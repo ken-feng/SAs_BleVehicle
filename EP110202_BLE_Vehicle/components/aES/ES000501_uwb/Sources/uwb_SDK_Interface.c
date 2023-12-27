@@ -555,7 +555,7 @@ void distance_queue_refresh(ST_Ranging_Data* pst_ranging_dat, uint16_t new_data)
 	if(0 == pst_ranging_dat)
 		return ;
 	//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
-	#if defined __FIT_Aeon_H
+	#if defined __FIT_Aeon_StandardCAN_H
 	pst_ranging_dat->bufDistQueue[0] = pst_ranging_dat->bufDistQueue[1];
 	pst_ranging_dat->bufDistQueue[1] = pst_ranging_dat->bufDistQueue[2];
 	pst_ranging_dat->bufDistQueue[2] = new_data;
@@ -641,9 +641,13 @@ void ccc_detect_keyless_distance(ST_Ranging_Data* pst_ranging_dat)
 	//============================================================================
 	// UWB Disconnect
 	//============================================================================
-//	if(pst_ranging_dat->bufDistQueue[0]==0 && pst_ranging_dat->bufDistQueue[1]==0 && pst_ranging_dat->bufDistQueue[2]==0
-//		 && pst_ranging_dat->bufDistQueue[3]==0 && pst_ranging_dat->bufDistQueue[4]==0)
+	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
+	#if defined __FIT_Aeon_StandardCAN_H
 	if(pst_ranging_dat->bufDistQueue[0]==0 && pst_ranging_dat->bufDistQueue[1]==0 && pst_ranging_dat->bufDistQueue[2]==0)
+	#else
+	if(pst_ranging_dat->bufDistQueue[0]==0 && pst_ranging_dat->bufDistQueue[1]==0 && pst_ranging_dat->bufDistQueue[2]==0
+		 && pst_ranging_dat->bufDistQueue[3]==0 && pst_ranging_dat->bufDistQueue[4]==0)
+	#endif
 	{
 		g_KeylessState.bits.StartReport = 0;
 		g_KeylessState.bits.InRange = 0;
@@ -790,7 +794,7 @@ int API_UQ_Ranging_Result(fp_UQ_MSGSend_t callbackfun)
 	// Distance [0]old~[4]new
 	//============================================================================
 	//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
-	#if defined __FIT_Aeon_H
+	#if defined __FIT_Aeon_StandardCAN_H
 	*canbuf = core_dcm_u16_hi(stSource.stUCIState.stRaningDat.bufDistQueue[0]); canbuf += 1;
 	*canbuf = core_dcm_u16_lo(stSource.stUCIState.stRaningDat.bufDistQueue[0]); canbuf += 1;
 
@@ -840,8 +844,10 @@ int API_UQ_Ranging_Result(fp_UQ_MSGSend_t callbackfun)
 	//
 	//============================================================================
 	//Modify (Ken):VEHICLE-V0C02 NO.1 -20231218
-	#if defined __FIT_Aeon_H
+	#if defined __FIT_Aeon_H && defined __FIT_Aeon_StandardCAN_H
 	sendlens = 8;
+	#elif defined __FIT_Aeon_H
+	sendlens = 12;
 	#else
 	//sendlens = 12;
 	sendlens = 20;

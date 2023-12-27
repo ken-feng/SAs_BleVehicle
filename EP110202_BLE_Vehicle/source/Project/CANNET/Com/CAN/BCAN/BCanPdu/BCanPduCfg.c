@@ -213,7 +213,7 @@ CanTxPduHandle_t g_BCanTxPduList[BCANPDU_N_TX] =
     { /* 7 */
     	CAN_EVENT_MSG, 0x133, g_BCanPdu_BLE_0x133.Data,
 		//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
-		#if defined __FIT_Aeon_H
+		#if defined __FIT_Aeon_StandardCAN_H
 		8, 0, 0, FALSE, 20, 20, FALSE, 1, 0,
 		#else
 		64, 0, 0, FALSE, 20, 20, FALSE, 1, 0,
@@ -235,7 +235,7 @@ CanTxPduHandle_t g_BCanTxPduList[BCANPDU_N_TX] =
     { /* 10 */
 		CAN_EVENT_MSG, 0x061, g_BCanPdu_OBD_0x61.Data,
 		//Modify (Ken):VEHICLE-V0C02 NO.2 -20231225
-		#if defined __FIT_Aeon_H
+		#if defined __FIT_Aeon_StandardCAN_H
 		8, 0, 0, FALSE, 20, 20, FALSE, 1, 0,
 		#else
 		64, 0, 0, FALSE, 20, 20, FALSE, 1, 0,
